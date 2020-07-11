@@ -1,0 +1,12 @@
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\RepositoryLayer.deps.json
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\RepositoryLayer.dll
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.csprojAssemblyReference.cache
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.csproj.CoreCompileInputs.cache
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.AssemblyInfoInputs.cache
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.AssemblyInfo.cs
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\RepositoryLayer.pdb
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\CommonLayer.dll
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\CommonLayer.pdb
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.csproj.CopyComplete
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.dll
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.pdb
