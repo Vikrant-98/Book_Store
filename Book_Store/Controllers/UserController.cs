@@ -12,7 +12,7 @@ namespace Book_Store.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private IBookStoreBL books;
+        private readonly IBookStoreBL books;
 
         public UserController(IBookStoreBL data)
         {
