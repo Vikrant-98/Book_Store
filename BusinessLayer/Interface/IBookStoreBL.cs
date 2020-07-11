@@ -1,0 +1,13 @@
+﻿using CommonLayer.Services;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BusinessLayer.Interface
+{
+    public interface IBookStoreBL
+    {
+        object BooksDatails(User data);
+
+    }
+}
