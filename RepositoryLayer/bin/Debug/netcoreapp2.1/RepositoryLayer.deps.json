@@ -10,7 +10,8 @@
         "dependencies": {
           "CommonLayer": "1.0.0",
           "System.Configuration.ConfigurationManager": "4.7.0",
-          "System.Data.SqlClient": "4.8.1"
+          "System.Data.SqlClient": "4.8.1",
+          "Microsoft.Extensions.Configuration.Abstractions": "2.1.1.0"
         },
         "runtime": {
           "RepositoryLayer.dll": {}
@@ -230,6 +231,14 @@
         "runtime": {
           "CommonLayer.dll": {}
         }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/2.1.1.0": {
+        "runtime": {
+          "Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "2.1.1.0",
+            "fileVersion": "2.1.1.18157"
+          }
+        }
       }
     }
   },
@@ -346,6 +355,11 @@
     },
     "CommonLayer/1.0.0": {
       "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/2.1.1.0": {
+      "type": "reference",
       "serviceable": false,
       "sha512": ""
     }

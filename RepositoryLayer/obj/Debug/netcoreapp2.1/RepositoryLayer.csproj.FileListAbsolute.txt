@@ -10,3 +10,5 @@ C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2
 C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.csproj.CopyComplete
 C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.dll
 C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\obj\Debug\netcoreapp2.1\RepositoryLayer.pdb
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\The Daddy\source\repos\Book_Store\RepositoryLayer\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.xml
