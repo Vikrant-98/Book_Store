@@ -33,8 +33,8 @@ namespace Book_Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IBookStoreRL, BookStoreRL>();
             services.AddTransient<IBookStoreBL, BookStoreBL>();
+            services.AddTransient<IBookStoreRL, BookStoreRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -101,7 +101,7 @@ namespace Book_Store
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            app.UseAuthentication();    
+            app.UseAuthentication();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

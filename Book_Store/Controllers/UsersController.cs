@@ -4,18 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
 using CommonLayer.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Book_Store.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IBookStoreBL books;
 
-        public UserController(IBookStoreBL data)
+        public UsersController(IBookStoreBL data)
         {
             books = data;
         }
