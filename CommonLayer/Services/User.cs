@@ -7,14 +7,14 @@ namespace CommonLayer.Services
 {
     public class User
     {
-        public string UserId { get; set; }
+        
         [Required]
-        [MaxLength(100)]
+        //[MaxLength(100)]
         [RegularExpression(@"^[A-Z]{1}[a-z]{2}[a-z]*$", ErrorMessage = "Enter Valid First Name")]
         //First Name
         public string FirstName { get; set; }
         [Required]
-        [MaxLength(100)]
+        //[MaxLength(100)]
         [RegularExpression(@"^[A-Z]{1}[a-z]{2}[a-z]*$", ErrorMessage = "Enter Valid Last Name")]
         //Last Name
         public string LastName { get; set; }
@@ -23,27 +23,23 @@ namespace CommonLayer.Services
         //Mail ID
         public string Email { get; set; }
         [Required(ErrorMessage = "User Category Is Required")]
-        [MaxLength(50)]
+        //[MaxLength(50)]
         //User Categiry
         public string UserCategory { get; set; }
         [Required]
-        [MaxLength(100)]
-        [RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*$", ErrorMessage = "Enter Valid Address")]
+        //[MaxLength(100)]
+        //[RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*$", ErrorMessage = "Enter Valid Address")]
         public string Address { get; set; }
-        [RegularExpression(@" ^[A-Z]{1}[a-z]{2}[a-z]*$", ErrorMessage = "Enter Valid City")]
-        [MaxLength(50)]
+        [RegularExpression(@"^[A-Z]{1}[a-z]{2}[a-z]*$", ErrorMessage = "Enter Valid City")]
+        //[MaxLength(50)]
         public string City { get; set; }
-        [MaxLength(6)]
+        //[MaxLength(6)]
         [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Enter Valid PinCode")]
         public int PinCode { get; set; }
         [Required(ErrorMessage = "Password Is Required")]
         [RegularExpression(@"^.{8,15}$", ErrorMessage = "Password Length should be between 8 to 15")]
         //Password
         public string Password { get; set; }
-        //Create date 
-        public DateTime CreateDate { get; set; } = DateTime.Now;
-        //Modified Date
-        public DateTime ModifiedDate { get; set; } = DateTime.Now;
     }
     public class EncryptedPassword
     {
