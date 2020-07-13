@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -12,16 +11,14 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Services
 {
-    public class UserRL : IUserRL
+    public class AdminRL : IAdminRL
     {
-
-        //Configuration initialized
         private readonly IConfiguration _configuration;
         private SqlConnection conn;
-        public static readonly string _user = "User";
+        public static readonly string _user = "Admin";
         readonly Random random = new Random();
         //constructor 
-        public UserRL(IConfiguration configuration)
+        public AdminRL(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -36,19 +33,19 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> UserRegistration(User data)
+        public async Task<RegistrationResponse> AdminRegistration(User data)
         {
             try
             {
                 RegistrationResponse responseData = null;
 
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
-                
+
                 DateTime createDate = DateTime.Now;
                 DateTime modifiedDate = DateTime.Now;
 
                 SQLConnection();
-               
+
                 using (SqlCommand command = new SqlCommand("spAddUserDetail", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
@@ -66,7 +63,6 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = RegistrationResponseModel(dataReader);
-                    
                     conn.Close();
                 };
                 return responseData;
@@ -78,7 +74,7 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> UserLogin(Login data)
+        public async Task<RegistrationResponse> AdminLogin(Login data)
         {
             try
             {
@@ -116,8 +112,8 @@ namespace RepositoryLayer.Services
                         FirstName = dataReader["FirstName"].ToString(),
                         LastName = dataReader["LastName"].ToString(),
                         Email = dataReader["Email"].ToString(),
-                        UserCategory = dataReader["UserCategory"].ToString(),
-                        CreatedDate = Convert.ToDateTime(dataReader["CreateDate"]),
+                        UserCategory = dataReader[" UserCategory"].ToString(),
+                        CreatedDate = Convert.ToDateTime(dataReader["CreatedDate"]),
                         ModifiedDate = Convert.ToDateTime(dataReader["ModifiedDate"])
                     };
                 }
@@ -128,7 +124,5 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-
     }
-
 }

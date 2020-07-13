@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interface
 {
-    public interface IUserRL
+    public interface IAdminRL
     {
-        Task<RegistrationResponse> UserRegistration(User data);
+        Task<RegistrationResponse> AdminRegistration(User data);
 
-        Task<RegistrationResponse> UserLogin(Login data);
+        Task<RegistrationResponse> AdminLogin(Login data);
     }
 }
