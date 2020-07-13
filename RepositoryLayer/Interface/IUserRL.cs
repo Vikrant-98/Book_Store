@@ -5,8 +5,10 @@ using System.Text;
 
 namespace RepositoryLayer.Interface
 {
-    public interface IBookStoreRL
+    public interface IUserRL
     {
-        object BooksDatails(User data);
+        object User(User data);
+
+        object Login(Login data);
     }
 }
