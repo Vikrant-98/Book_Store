@@ -5,9 +5,11 @@ using System.Text;
 
 namespace BusinessLayer.Interface
 {
-    public interface IBookStoreBL
+    public interface IUserBL
     {
-        object BooksDatails(User data);
+        object User(User data);
 
+        object Login(Login data);
+       
     }
 }
