@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Book_Store.MSMQ_Service;
 using Book_Store.TokenGeneration;
@@ -13,40 +10,40 @@ using MessagrListner;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Book_Store.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AdminController : ControllerBase
     {
-        private readonly IUserBL _books;
+        private readonly IAdminBL _books;
+        private readonly IConfiguration _configuration;
         MessageSender msmqSender = new MessageSender();
+        public static string _user = "Admin";
         Token token = new Token();
-        public static string _user = "User";
-        public UsersController(IUserBL _data)
+        public AdminController(IAdminBL _data)
         {
             _books = _data;
         }
 
-        [Route("Register")]
+        [Route("")]
         [HttpPost]
-        public async Task<IActionResult> UserRegister(User Info)
+        public IActionResult UserRegister(User Info)
         {
             try
             {
-                var data = await _books.UserRegistration(Info);
+                var data = _books.AdminRegistration(Info);
                 if (!data.Equals(null))
                 {
                     var status = true;
                     var Message = "User Details Entered Succesfully";
-                    string msmqRecordInQueue = Convert.ToString(Info.FirstName) 
-                    + Convert.ToString(Info.LastName) + "\n" + Message + "\n Email : " 
+                    string msmqRecordInQueue = Convert.ToString(Info.FirstName)
+                    + Convert.ToString(Info.LastName) + "\n" + Message + "\n Email : "
                     + Convert.ToString(Info.Password);
                     msmqSender.Message(msmqRecordInQueue);
                     MessageListner msg = new MessageListner();
-                    
+
 
                     return this.Ok(new { status, Message, data });
                 }
@@ -59,7 +56,7 @@ namespace Book_Store.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message );
+                return BadRequest(new { error = e.Message });
             }
         }
         [HttpPost]
@@ -68,9 +65,9 @@ namespace Book_Store.Controllers
         {
             try
             {
-                var Result = _books.UserLogin(Info);
+                var Result = _books.AdminLogin(Info);
 
-                var jsontoken = token.GenerateToken(Info,_user);
+                var jsontoken = token.GenerateToken(Info, _user);
                 if (!Result.Equals(null))
                 {
                     var status = "True";
@@ -89,6 +86,6 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        
+
     }
 }
