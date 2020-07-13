@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Interface
 {
-    public interface IUserBL
+    public interface IAdminBL
     {
-        Task<RegistrationResponse> UserRegistration(User data);
+        Task<RegistrationResponse> AdminRegistration(User data);
 
-        Task<RegistrationResponse> UserLogin(Login loginDetails);
-       
+        Task<RegistrationResponse> AdminLogin(Login loginDetails);
     }
 }

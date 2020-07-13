@@ -9,43 +9,42 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class UserBL : IUserBL
+    public class AdminBL : IAdminBL
     {
-        private IUserRL Books;
+        private IAdminRL Books;
 
-        public UserBL(IUserRL Data)
+        public AdminBL(IAdminRL Data)
         {
             Books = Data;
         }
 
-        public async Task<RegistrationResponse> UserRegistration(User data)
+        public async Task<RegistrationResponse> AdminRegistration(User data)
         {
             try
             {
                 if (data == null)
                     return null;
                 else
-                    return await Books.UserRegistration(data);
+                    return await Books.AdminRegistration(data);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public Task<RegistrationResponse> UserLogin(Login loginDetails)
+        public Task<RegistrationResponse> AdminLogin(Login loginDetails)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(loginDetails.Email) || string.IsNullOrWhiteSpace(loginDetails.Password))
                     return null;
                 else
-                    return Books.UserLogin(loginDetails);
+                    return Books.AdminLogin(loginDetails);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }
