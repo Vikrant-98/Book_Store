@@ -19,3 +19,5 @@ C:\Users\The Daddy\source\repos\Book_Store\Book_Store\bin\Debug\netcoreapp2.1\Bu
 C:\Users\The Daddy\source\repos\Book_Store\Book_Store\bin\Debug\netcoreapp2.1\CommonLayer.pdb
 C:\Users\The Daddy\source\repos\Book_Store\Book_Store\bin\Debug\netcoreapp2.1\RepositoryLayer.pdb
 C:\Users\The Daddy\source\repos\Book_Store\Book_Store\obj\Debug\netcoreapp2.1\Book_Store.csproj.CopyComplete
+C:\Users\The Daddy\source\repos\Book_Store\Book_Store\bin\Debug\netcoreapp2.1\MessagrListner.dll
+C:\Users\The Daddy\source\repos\Book_Store\Book_Store\bin\Debug\netcoreapp2.1\MessagrListner.pdb

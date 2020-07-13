@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "af478ea6fed58b6df556fa69dd111a9e1f977840"
+    "signature": "d41a5611d50e40e3d2f24f9297a3c3c3d0b6d3c7"
   },
   "compilationOptions": {
     "defines": [
@@ -26,7 +26,9 @@
         "dependencies": {
           "BusinessLayer": "1.0.0",
           "CommonLayer": "1.0.0",
+          "Experimental.System.Messaging": "1.1.0",
           "MailKit": "2.8.0",
+          "MessagrListner": "1.0.0",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.AspNetCore.Razor.Design": "2.1.2",
           "Microsoft.NETCore.App": "2.1.0",
@@ -39,6 +41,17 @@
         },
         "compile": {
           "Book_Store.dll": {}
+        }
+      },
+      "Experimental.System.Messaging/1.1.0": {
+        "runtime": {
+          "lib/netstandard2.0/Experimental.System.Messaging.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Experimental.System.Messaging.dll": {}
         }
       },
       "MailKit/2.8.0": {
@@ -1107,6 +1120,19 @@
         },
         "compile": {
           "CommonLayer.dll": {}
+        }
+      },
+      "MessagrListner/1.0.0": {
+        "dependencies": {
+          "Experimental.System.Messaging": "1.1.0",
+          "MailKit": "2.8.0",
+          "Microsoft.NETCore.App": "2.1.0"
+        },
+        "runtime": {
+          "MessagrListner.dll": {}
+        },
+        "compile": {
+          "MessagrListner.dll": {}
         }
       },
       "RepositoryLayer/1.0.0": {
@@ -3929,6 +3955,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Experimental.System.Messaging/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vub7Mtt2WFdFKTZKECVuZx6feP5kUpS9EfVy+Yu4GDfdlMwivRdX4TbdkDYS2lKqCjqzUbnxTbJei1IOqC+CnA==",
+      "path": "experimental.system.messaging/1.1.0",
+      "hashPath": "experimental.system.messaging.1.1.0.nupkg.sha512"
+    },
     "MailKit/2.8.0": {
       "type": "package",
       "serviceable": true,
@@ -4418,6 +4451,11 @@
       "sha512": ""
     },
     "CommonLayer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MessagrListner/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

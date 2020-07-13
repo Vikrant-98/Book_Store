@@ -4925,6 +4925,21 @@
           "bin/placeholder/CommonLayer.dll": {}
         }
       },
+      "MessagrListner/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "dependencies": {
+          "Experimental.System.Messaging": "1.1.0",
+          "MailKit": "2.8.0",
+          "Microsoft.NETCore.App": "2.1.0"
+        },
+        "compile": {
+          "bin/placeholder/MessagrListner.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MessagrListner.dll": {}
+        }
+      },
       "RepositoryLayer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
@@ -13410,6 +13425,11 @@
       "path": "../CommonLayer/CommonLayer.csproj",
       "msbuildProject": "../CommonLayer/CommonLayer.csproj"
     },
+    "MessagrListner/1.0.0": {
+      "type": "project",
+      "path": "../MessagrListner/MessagrListner.csproj",
+      "msbuildProject": "../MessagrListner/MessagrListner.csproj"
+    },
     "RepositoryLayer/1.0.0": {
       "type": "project",
       "path": "../RepositoryLayer/RepositoryLayer.csproj",
@@ -13422,6 +13442,7 @@
       "CommonLayer >= 1.0.0",
       "Experimental.System.Messaging >= 1.1.0",
       "MailKit >= 2.8.0",
+      "MessagrListner >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.1.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.1.2",
       "Microsoft.NETCore.App >= 2.1.0",
@@ -13465,6 +13486,9 @@
             },
             "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\CommonLayer\\CommonLayer.csproj": {
               "projectPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\CommonLayer\\CommonLayer.csproj"
+            },
+            "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessagrListner.csproj": {
+              "projectPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessagrListner.csproj"
             },
             "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\RepositoryLayer\\RepositoryLayer.csproj": {
               "projectPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\RepositoryLayer\\RepositoryLayer.csproj"
