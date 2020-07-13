@@ -22,11 +22,6 @@ namespace CommonLayer.Services
         [RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*[.]{0,1}[a-zA-Z0-9]*@[a-zA-Z0-9]*.{1}[a-zA-Z0-9]*[.]*[a-zA-Z0-9]*)$", ErrorMessage = "Enter Valid Email")]
         //Mail ID
         public string Email { get; set; }
-        [Required(ErrorMessage = "User Category Is Required")]
-        //[MaxLength(50)]
-        //User Categiry
-        public string UserCategory { get; set; }
-        [Required]
         //[MaxLength(100)]
         //[RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*$", ErrorMessage = "Enter Valid Address")]
         public string Address { get; set; }
