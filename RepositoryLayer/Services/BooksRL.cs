@@ -30,7 +30,12 @@ namespace RepositoryLayer.Services
             string sqlConnectionString = _configuration.GetConnectionString("myconn");
             conn = new SqlConnection(sqlConnectionString);
         }
-
+        /// <summary>
+        /// Add Books Details
+        /// </summary>
+        /// <param name="adminId"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task<BooksResponse> AddBooks(int adminId,Books data)
         {
             try
@@ -92,6 +97,74 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Delete Books from the database
+        /// </summary>
+        /// <returns>Data get deleted or Exception get thrown</returns>
+        public async Task<List<BooksResponse>> DeleteBooks(int BookId)
+        {
+            try
+            {
+                List<BooksResponse> deleteBook = null;
+                SQLConnection();
+                deleteBook = new List<BooksResponse>();
+                using (SqlCommand command = new SqlCommand("spDeleteBookById", conn))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@BookId", BookId);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                    deleteBook = ListBookResponseModel(dataReader);
+                };
+                return deleteBook;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Add Books Details
+        /// </summary>
+        /// <param name="adminId"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task<BooksResponse> UpdateBooks(int BooksId, Books data)
+        {
+            try
+            {
+                BooksResponse responseData = null;
+
+                DateTime createDate = DateTime.Now;
+                DateTime modifiedDate = DateTime.Now;
+
+                SQLConnection();
+
+                using (SqlCommand command = new SqlCommand("spUpdateBookById", conn))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@BookId", BooksId);
+                    command.Parameters.AddWithValue("@BookName", data.BookName);
+                    command.Parameters.AddWithValue("@AuthorName", data.AuthorName);
+                    command.Parameters.AddWithValue("@Price", data.Price);
+                    command.Parameters.AddWithValue("@Pages", data.Pages);
+                    command.Parameters.AddWithValue("@Description", data.Description);
+                    command.Parameters.AddWithValue("@Available", data.Available);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                    responseData = BooksResponseModel(dataReader);
+                    conn.Close();
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         /// <summary>
         /// Search book by Name in the database
@@ -107,7 +180,7 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spSearchBookByName", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookName", bookSearch.Search);
+                    command.Parameters.AddWithValue("@search", bookSearch.Search);
 
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
@@ -120,6 +193,12 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+        /// <summary>
+        /// Ascending/Decending sorting
+        /// </summary>
+        /// <param name="sortingChoice"></param>
+        /// <param name="sortingType"></param>
+        /// <returns>Return sorted books Ascending/Decending</returns>
         public async Task<List<BooksResponse>> SortBooks(string sortingChoice, string sortingType)
         {
             try
@@ -144,7 +223,11 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Category Choice
+        /// </summary>
+        /// <param name="sortingChoice"></param>
+        /// <returns>Return Category Choice</returns>
         public int CategoryChoice(string sortingChoice)
         {
             switch (sortingChoice)
@@ -159,7 +242,11 @@ namespace RepositoryLayer.Services
                     return 1;
             }
         }
-
+        /// <summary>
+        /// Category Type Choice
+        /// </summary>
+        /// <param name="sortingType"></param>
+        /// <returns>Return Category Type Choice</returns>
         public string CategoryTypeChoice(string sortingType)
         {
             switch (sortingType)
@@ -173,7 +260,11 @@ namespace RepositoryLayer.Services
             }
         }
 
-
+        /// <summary>
+        /// List of Book Response Method
+        /// </summary>
+        /// <param name="dataReader">Sql Data Reader</param>
+        /// <returns>It return Book Response Data</returns>
         private BooksResponse BooksResponseModel(SqlDataReader dataReader)
         {
             try

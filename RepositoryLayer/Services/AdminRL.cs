@@ -85,6 +85,7 @@ namespace RepositoryLayer.Services
 
                 using (SqlCommand command = new SqlCommand("spUserLogin", conn))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Email", data.Email);
                     command.Parameters.AddWithValue("@Password", Password);
                     conn.Open();
