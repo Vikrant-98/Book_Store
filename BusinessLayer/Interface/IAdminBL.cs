@@ -9,8 +9,8 @@ namespace BusinessLayer.Interface
 {
     public interface IAdminBL
     {
-        Task<RegistrationResponse> AdminRegistration(User data);
+        Task<AdminRegistrationResponse> AdminRegistration(User data);
 
-        Task<RegistrationResponse> AdminLogin(Login loginDetails);
+        Task<AdminRegistrationResponse> AdminLogin(Login loginDetails);
     }
 }
