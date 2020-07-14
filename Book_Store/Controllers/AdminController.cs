@@ -18,7 +18,6 @@ namespace Book_Store.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IAdminBL _books;
-        private readonly IConfiguration _configuration;
         MessageSender msmqSender = new MessageSender();
         public static string _user = "Admin";
         Token token = new Token();
@@ -29,17 +28,18 @@ namespace Book_Store.Controllers
 
         [Route("")]
         [HttpPost]
-        public IActionResult UserRegister(User Info)
+        public async Task<IActionResult> UserRegister(User Info)
         {
             try
             {
-                var data = _books.AdminRegistration(Info);
+                var data = await _books.AdminRegistration(Info);
                 if (!data.Equals(null))
                 {
                     var status = true;
                     var Message = "User Details Entered Succesfully";
                     string msmqRecordInQueue = Convert.ToString(Info.FirstName)
-                    + Convert.ToString(Info.LastName) + "\n" + Message + "\n Email : "
+                    + Convert.ToString(Info.LastName) 
+                    + "\n" + Message + "\n Email : "
                     + Convert.ToString(Info.Password);
                     msmqSender.Message(msmqRecordInQueue);
                     MessageListner msg = new MessageListner();

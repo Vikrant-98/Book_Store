@@ -25,9 +25,9 @@ namespace Book_Store.Controllers
         MessageSender msmqSender = new MessageSender();
         Token token = new Token();
         public static string _user = "User";
-        public UsersController(IUserBL _data)
+        public UsersController(IUserBL data)
         {
-            _books = _data;
+            _books = data;
         }
 
         [Route("Register")]
