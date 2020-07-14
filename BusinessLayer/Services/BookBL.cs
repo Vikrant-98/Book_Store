@@ -32,6 +32,7 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
         public async Task<List<BooksResponse>> GetListOfBooks()
         {
             try
@@ -43,6 +44,34 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<BooksResponse>> DeleteBooks(int BookId)
+        {
+            try
+            {
+                return await _books.DeleteBooks(BookId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<BooksResponse> UpdateBooks(int BooksId, Books data)
+        {
+            try
+            {
+                if (data == null)
+                    return null;
+                else
+                    return await _books.UpdateBooks(BooksId, data);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<List<BooksResponse>> SearchBook(BookSearchRequest bookSearch)
         {
             try

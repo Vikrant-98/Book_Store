@@ -13,6 +13,10 @@ namespace BusinessLayer.Interface
 
         Task<List<BooksResponse>> GetListOfBooks();
 
+        Task<List<BooksResponse>> DeleteBooks(int BookId);
+
+        Task<BooksResponse> UpdateBooks(int BooksId, Books data);
+
         Task<List<BooksResponse>> SearchBook(BookSearchRequest bookSearch);
 
         Task<List<BooksResponse>> SortBooks(string sortingChoice, string sortingType);

@@ -32,14 +32,14 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        public Task<RegistrationResponse> UserLogin(Login loginDetails)
+        public async Task<RegistrationResponse> UserLogin(Login loginDetails)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(loginDetails.Email) || string.IsNullOrWhiteSpace(loginDetails.Password))
                     return null;
                 else
-                    return Books.UserLogin(loginDetails);
+                    return await Books.UserLogin(loginDetails);
             }
             catch (Exception ex)
             {
