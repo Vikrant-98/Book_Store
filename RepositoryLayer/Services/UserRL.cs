@@ -117,6 +117,9 @@ namespace RepositoryLayer.Services
                         LastName = dataReader["LastName"].ToString(),
                         Email = dataReader["Email"].ToString(),
                         UserCategory = dataReader["UserCategory"].ToString(),
+                        City = dataReader["City"].ToString(),
+                        Address = dataReader["Address"].ToString(),
+                        PinCode = Convert.ToInt32(dataReader["Pincode"]),
                         CreatedDate = Convert.ToDateTime(dataReader["CreateDate"]),
                         ModifiedDate = Convert.ToDateTime(dataReader["ModifiedDate"])
                     };

@@ -33,11 +33,11 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> AdminRegistration(User data)
+        public async Task<AdminRegistrationResponse> AdminRegistration(User data)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                AdminRegistrationResponse responseData = null;
 
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
 
@@ -74,11 +74,11 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> AdminLogin(Login data)
+        public async Task<AdminRegistrationResponse> AdminLogin(Login data)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                AdminRegistrationResponse responseData = null;
 
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
                 SQLConnection();
@@ -99,21 +99,24 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        private RegistrationResponse RegistrationResponseModel(SqlDataReader dataReader)
+        private AdminRegistrationResponse RegistrationResponseModel(SqlDataReader dataReader)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                AdminRegistrationResponse responseData = null;
                 while (dataReader.Read())
                 {
-                    responseData = new RegistrationResponse
+                    responseData = new AdminRegistrationResponse
                     {
-                        UserId = Convert.ToInt32(dataReader["UserId"]),
+                        AdminId = Convert.ToInt32(dataReader["UserId"]),
                         FirstName = dataReader["FirstName"].ToString(),
                         LastName = dataReader["LastName"].ToString(),
                         Email = dataReader["Email"].ToString(),
-                        UserCategory = dataReader[" UserCategory"].ToString(),
-                        CreatedDate = Convert.ToDateTime(dataReader["CreatedDate"]),
+                        UserCategory = dataReader["UserCategory"].ToString(),
+                        City = dataReader["City"].ToString(),
+                        Address = dataReader["Address"].ToString(),
+                        PinCode = Convert.ToInt32(dataReader["Pincode"]),
+                        CreatedDate = Convert.ToDateTime(dataReader["CreateDate"]),
                         ModifiedDate = Convert.ToDateTime(dataReader["ModifiedDate"])
                     };
                 }

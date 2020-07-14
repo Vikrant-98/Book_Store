@@ -9,8 +9,8 @@ namespace RepositoryLayer.Interface
 {
     public interface IAdminRL
     {
-        Task<RegistrationResponse> AdminRegistration(User data);
+        Task<AdminRegistrationResponse> AdminRegistration(User data);
 
-        Task<RegistrationResponse> AdminLogin(Login data);
+        Task<AdminRegistrationResponse> AdminLogin(Login data);
     }
 }
