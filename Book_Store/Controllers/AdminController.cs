@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Book_Store.MSMQ_Service;
 using Book_Store.TokenGeneration;
@@ -10,6 +13,7 @@ using MessagrListner;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Book_Store.Controllers
 {
@@ -19,11 +23,14 @@ namespace Book_Store.Controllers
     {
         private readonly IAdminBL _books;
         MessageSender msmqSender = new MessageSender();
-        public static string _user = "Admin";
-        Token token = new Token();
-        public AdminController(IAdminBL _data)
+        public static string _admin = "Admin";
+        private IConfiguration _configuration;
+        
+        public AdminController(IAdminBL data, IConfiguration configuration)
         {
-            _books = _data;
+            _books = data;
+            _configuration = configuration;
+
         }
 
         [Route("")]
@@ -61,18 +68,17 @@ namespace Book_Store.Controllers
         }
         [HttpPost]
         [Route("login")]
-        public IActionResult UserLogin([FromBody] Login Info)
+        public async Task<IActionResult> UserLogin([FromBody] Login Info)
         {
             try
             {
-                var Result = _books.AdminLogin(Info);
-
-                var jsontoken = token.GenerateToken(Info, _user);
+                var Result = await _books.AdminLogin(Info);
+                var jsontoken = GenerateToken(Info, _admin);
                 if (!Result.Equals(null))
                 {
                     var status = "True";
                     var Message = "Login Successful";
-                    return Ok(new { status, Message, Result });
+                    return Ok(new { status, Message, Result, jsontoken });
                 }
                 else
                 {
@@ -86,6 +92,31 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
+        private string GenerateToken(Login Info, string UserCategory)
+        {
+            try
+            {
+                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
+                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Role, UserCategory),
+                    new Claim("Email", Info.Email),
+                    new Claim("Password", Info.Password)
+                };
+                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Issuer"],
+                    claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCreds);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

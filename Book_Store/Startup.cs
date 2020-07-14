@@ -58,7 +58,7 @@ namespace Book_Store
                 c.SwaggerDoc("v1",
                     new OpenApiInfo
                     {
-                        Title = "ParkingLot Api",
+                        Title = "Book Store",
                         Description = "Swagger Api",
                         Version = "v1"
                     });

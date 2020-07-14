@@ -38,7 +38,7 @@ namespace Book_Store.Controllers
                 else
                 {
                     var status = false;
-                    var Message = "User Details Entered Failed";
+                    var Message = "Books Details Entered Failed";
                     return this.BadRequest(new { status, Message });
                 }
             }
@@ -47,6 +47,7 @@ namespace Book_Store.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         [HttpGet]
         public async Task<IActionResult> GetListOfBooks()
         {
@@ -72,6 +73,59 @@ namespace Book_Store.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{BookId}")]
+        public async Task<IActionResult> DeleteBooks(int BookId)
+        {
+            try
+            {
+                var data = await _books.DeleteBooks(BookId);
+                if (data != null)
+                {
+                    var success = true;
+                    var message = "Books Deleted Successfully";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    var message = "No Data Found";
+                    var status = false;
+                    return NotFound(new { status, message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
+        [Route("{BookId}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateBooks(int BookId, Books Info)
+        {
+            try
+            {
+                
+                var data = await _books.UpdateBooks(BookId, Info);
+                if (!data.Equals(null))
+                {
+                    var status = true;
+                    var Message = "Books Details Update Succesfully";
+                    return this.Ok(new { status, Message, data });
+                }
+                else
+                {
+                    var status = false;
+                    var Message = "Books Details Update Failed";
+                    return this.BadRequest(new { status, Message });
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         /// <summary>
         /// Search Book by Name
         /// </summary>
@@ -84,7 +138,7 @@ namespace Book_Store.Controllers
             try
             {
                 var data = await _books.SearchBook(bookSearch);
-                if (data != null)
+                if (data != null && data.Count != 0)
                 {
                     var success = true;
                     var message = "Book Fetched Successfully";

@@ -23,11 +23,15 @@ namespace Book_Store.Controllers
     {
         private readonly IUserBL _books;
         MessageSender msmqSender = new MessageSender();
-        Token token = new Token();
+        
         public static string _user = "User";
-        public UsersController(IUserBL data)
+        private IConfiguration _configuration;
+
+        public UsersController(IUserBL data, IConfiguration configuration)
         {
             _books = data;
+            _configuration = configuration;
+
         }
 
         [Route("Register")]
@@ -64,18 +68,17 @@ namespace Book_Store.Controllers
         }
         [HttpPost]
         [Route("login")]
-        public IActionResult UserLogin([FromBody] Login Info)
+        public async Task<IActionResult> UserLogin([FromBody] Login Info)
         {
             try
             {
-                var Result = _books.UserLogin(Info);
-
-                var jsontoken = token.GenerateToken(Info,_user);
+                var Result = await _books.UserLogin(Info);
+                var jsontoken = GenerateToken(Info,_user);
                 if (!Result.Equals(null))
                 {
                     var status = "True";
                     var Message = "Login Successful";
-                    return Ok(new { status, Message, Result });
+                    return Ok(new { status, Message, Result ,jsontoken });
                 }
                 else
                 {
@@ -89,6 +92,31 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        
+        private string GenerateToken(Login Info, string UserCategory)
+        {
+            try
+            {
+                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+
+                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Role, UserCategory),
+                    new Claim("Email", Info.Email),
+                    new Claim("Password", Info.Password)
+                };
+                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Issuer"],
+                    claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCreds);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
