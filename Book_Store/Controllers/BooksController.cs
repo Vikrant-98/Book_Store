@@ -193,12 +193,12 @@ namespace Book_Store.Controllers
         /// </summary>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
         [HttpGet]
-        [Route("Sort")]
-        public async Task<IActionResult> SortBooks(string sortingChoice, string sortingType)
+        [Route("{Choice}/Sort/{Type}")]
+        public async Task<IActionResult> SortBooks(string Choice, string Type)
         {
             try
             {
-                var data = await _books.SortBooks(sortingChoice,sortingType);
+                var data = await _books.SortBooks(Choice,Type);
                 if (data != null)
                 {
                     var success = true;

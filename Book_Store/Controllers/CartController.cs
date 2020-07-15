@@ -29,26 +29,35 @@ namespace Book_Store.Controllers
         /// </summary>
         /// <param name="cart">Cart Data</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [Route("{UserId}")]
+        [Route("{BookID}")]
         [HttpPost]
-        public async Task<IActionResult> AddBookIntoCart(int UserId,Cart cart)
+        public async Task<IActionResult> AddBookIntoCart(int BookID)
         {
             try
             {
-                
-               var data = await _cart.AddBookIntoCart(UserId, cart);
-               if (data != null)
-               {
-                    success = true;
-                    message = "Book Added into Cart Successfully";
-                    return Ok(new { success, message, data });
-               }
-               else
-               {
-                    message = "No Data Provided";
-                    return NotFound(new { success, message });
-               }
-
+                var user = HttpContext.User;
+                if ((user.HasClaim(u => u.Type == "TokenType")) && (user.HasClaim(u => u.Type == "UserRole")))
+                {
+                    if ((user.Claims.FirstOrDefault(u => u.Type == "TokenType").Value == "login") &&
+                            (user.Claims.FirstOrDefault(u => u.Type == "UserRole").Value == "User"))
+                    {
+                        int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
+                        var data = await _cart.AddBookIntoCart(userID,BookID);
+                        if (data != null)
+                        {
+                            success = true;
+                            message = "Added to Card Successfully";
+                            return Ok(new { success, message, data });
+                        }
+                        else
+                        {
+                            message = "No Cart Added";
+                            return NotFound(new { success, message });
+                        }
+                    }
+                }
+                message = "Token Invalid!";
+                return BadRequest(new { success, message });
             }
             catch (Exception ex)
             {
