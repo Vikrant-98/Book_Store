@@ -36,7 +36,7 @@ namespace RepositoryLayer.Services
         /// <param name="userID">User-ID</param>
         /// <param name="cart">Cart Data</param>
         /// <returns>If Data Added Successfully return Response Data else null or Bad Request</returns>
-        public async Task<CartBookResponse> AddBookIntoCart(int userID, Cart cart)
+        public async Task<CartBookResponse> AddBookIntoCart(int userID, int BookID)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace RepositoryLayer.Services
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserId", userID);
-                    cmd.Parameters.AddWithValue("@BookId", cart.BookID);
+                    cmd.Parameters.AddWithValue("@BookId", BookID);
 
                     conn.Open();
                     SqlDataReader dataReader = await cmd.ExecuteReaderAsync();

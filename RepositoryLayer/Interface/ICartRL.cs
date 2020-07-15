@@ -9,7 +9,7 @@ namespace RepositoryLayer.Interface
 {
     public interface ICartRL
     {
-        Task<CartBookResponse> AddBookIntoCart(int userID, Cart cart);
+        Task<CartBookResponse> AddBookIntoCart(int userID, int BookID);
 
         Task<List<CartBookResponse>> GetListOfBooksInCart(int userID);
 
