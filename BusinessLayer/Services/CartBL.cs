@@ -38,17 +38,17 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<CartBookResponse> AddBookIntoCart(int userID, Cart cart)
+        public async Task<CartBookResponse> AddBookIntoCart(int userID, int BookID)
         {
             try
             {
-                if (userID <= 0 || cart.BookID == 0)
+                if (userID <= 0 || BookID == 0)
                 {
                     return null;
                 }
                 else
                 {
-                    return await _cart.AddBookIntoCart(userID, cart);
+                    return await _cart.AddBookIntoCart(userID, BookID);
                 }
             }
             catch (Exception ex)
