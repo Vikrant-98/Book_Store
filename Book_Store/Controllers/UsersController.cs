@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Book_Store.MSMQ_Service;
 using Book_Store.TokenGeneration;
 using BusinessLayer.Interface;
+using CommonLayer.Responce;
 using CommonLayer.Services;
 using MessagrListner;
 using Microsoft.AspNetCore.Http;
@@ -73,7 +74,7 @@ namespace Book_Store.Controllers
             try
             {
                 var Result = await _books.UserLogin(Info);
-                var jsontoken = GenerateToken(Info,_user);
+                var jsontoken = GenerateToken(Result, "login");
                 if (!Result.Equals(null))
                 {
                     var status = "True";
@@ -92,7 +93,7 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        private string GenerateToken(Login Info, string UserCategory)
+        private string GenerateToken(RegistrationResponse Info, string tokenType)
         {
             try
             {
@@ -100,11 +101,12 @@ namespace Book_Store.Controllers
 
                 var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
 
-                var claims = new List<Claim>
+                var claims = new[]
                 {
-                    new Claim(ClaimTypes.Role, UserCategory),
-                    new Claim("Email", Info.Email),
-                    new Claim("Password", Info.Password)
+                    new Claim("UserID", Info.UserId.ToString()),
+                    new Claim("Email", Info.Email.ToString()),
+                    new Claim("TokenType", tokenType),
+                    new Claim("UserRole", Info.UserCategory.ToString())
                 };
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],

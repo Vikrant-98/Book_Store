@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Book_Store.MSMQ_Service;
 using Book_Store.TokenGeneration;
 using BusinessLayer.Interface;
+using CommonLayer.Responce;
 using CommonLayer.Services;
 using MessagrListner;
 using Microsoft.AspNetCore.Http;
@@ -68,12 +69,12 @@ namespace Book_Store.Controllers
         }
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> UserLogin([FromBody] Login Info)
+        public async Task<IActionResult> AdminLogin([FromBody] Login Info)
         {
             try
             {
                 var Result = await _books.AdminLogin(Info);
-                var jsontoken = GenerateToken(Info, _admin);
+                var jsontoken = GenerateToken(Result, "login");
                 if (!Result.Equals(null))
                 {
                     var status = "True";
@@ -92,25 +93,31 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        private string GenerateToken(Login Info, string UserCategory)
+
+        /// <summary>
+        /// Generates Token
+        /// </summary>
+        /// <param name="adminDetails">Admin Response Details</param>
+        /// <param name="tokenType">Token Type</param>
+        /// <returns>It return token else exception</returns>
+        private string GenerateToken(AdminRegistrationResponse adminDetails, string tokenType)
         {
             try
             {
-                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
-
-                var claims = new List<Claim>
+                var claims = new[]
                 {
-                    new Claim(ClaimTypes.Role, UserCategory),
-                    new Claim("Email", Info.Email),
-                    new Claim("Password", Info.Password)
+                    new Claim("AdminID", adminDetails.AdminId.ToString()),
+                    new Claim("Email", adminDetails.Email.ToString()),
+                    new Claim("TokenType", tokenType),
+                    new Claim("UserRole", adminDetails.UserCategory.ToString())
                 };
-                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-                    _configuration["Jwt:Issuer"],
-                    claims,
-                    expires: DateTime.Now.AddHours(1),
-                    signingCredentials: signingCreds);
+
+                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Issuer"],
+                    claims, expires: DateTime.Now.AddDays(1), signingCredentials: credentials);
+
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
             catch (Exception ex)
@@ -118,5 +125,34 @@ namespace Book_Store.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        //private string GenerateToken(AdminRegistrationResponse Info, string tokenType)
+        //{
+        //    try
+        //    {
+        //        var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
+        //        (_configuration["Jwt:Key"]));
+
+        //        var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+        //        var claims = new[]
+        //        {
+        //            new Claim("AdminID", Info.AdminId.ToString()),
+        //            new Claim("Email", Info.Email.ToString()),
+        //            new Claim("TokenType", tokenType),
+        //            new Claim("UserRole", Info.UserCategory.ToString())
+        //        };
+        //        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+        //            _configuration["Jwt:Issuer"],
+        //            claims,
+        //            expires: DateTime.Now.AddHours(1),
+        //            signingCredentials: signingCreds);
+        //        return new JwtSecurityTokenHandler().WriteToken(token);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
+        //}
     }
 }
