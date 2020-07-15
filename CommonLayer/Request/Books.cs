@@ -7,9 +7,7 @@ namespace CommonLayer.Request
     public class Books
     {
         public string BookName { get; set; }
-
-        public int AdminId { get; set; }
-
+        
         public string AuthorName { get; set; }
 
         public string Description { get; set; }
