@@ -74,7 +74,7 @@ namespace Book_Store.Controllers
             try
             {
                 var Result = await _books.AdminLogin(Info);
-                var jsontoken = GenerateToken(Result, "login");
+                var jsontoken = GenerateToken(Result);
                 if (!Result.Equals(null))
                 {
                     var status = "True";
@@ -100,24 +100,25 @@ namespace Book_Store.Controllers
         /// <param name="adminDetails">Admin Response Details</param>
         /// <param name="tokenType">Token Type</param>
         /// <returns>It return token else exception</returns>
-        private string GenerateToken(AdminRegistrationResponse adminDetails, string tokenType)
+        private string GenerateToken(AdminRegistrationResponse Info)
         {
             try
             {
-                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
-                var claims = new[]
+                var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
+
+                var claims = new List<Claim>
                 {
-                    new Claim("AdminID", adminDetails.AdminId.ToString()),
-                    new Claim("Email", adminDetails.Email.ToString()),
-                    new Claim("TokenType", tokenType),
-                    new Claim("UserRole", adminDetails.UserCategory.ToString())
+                    new Claim(ClaimTypes.Role, Info.UserCategory.ToString()),
+                    new Claim("EmailID", Info.Email.ToString()),
+                    new Claim("AdminID", Info.AdminId.ToString())
                 };
-
-                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Issuer"],
-                    claims, expires: DateTime.Now.AddDays(1), signingCredentials: credentials);
-
+                var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Issuer"],
+                    claims,
+                    expires: DateTime.Now.AddHours(1),
+                    signingCredentials: signingCreds);
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
             catch (Exception ex)
@@ -125,34 +126,5 @@ namespace Book_Store.Controllers
                 throw new Exception(ex.Message);
             }
         }
-
-        //private string GenerateToken(AdminRegistrationResponse Info, string tokenType)
-        //{
-        //    try
-        //    {
-        //        var symmetricSecuritykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
-        //        (_configuration["Jwt:Key"]));
-
-        //        var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
-
-        //        var claims = new[]
-        //        {
-        //            new Claim("AdminID", Info.AdminId.ToString()),
-        //            new Claim("Email", Info.Email.ToString()),
-        //            new Claim("TokenType", tokenType),
-        //            new Claim("UserRole", Info.UserCategory.ToString())
-        //        };
-        //        var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
-        //            _configuration["Jwt:Issuer"],
-        //            claims,
-        //            expires: DateTime.Now.AddHours(1),
-        //            signingCredentials: signingCreds);
-        //        return new JwtSecurityTokenHandler().WriteToken(token);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
     }
 }

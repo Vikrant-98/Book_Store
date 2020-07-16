@@ -43,56 +43,57 @@ namespace Book_Store
             services.AddTransient<IBooksRL, BooksRL>();
             services.AddTransient<ICartBL, CartBL>();
             services.AddTransient<ICartRL, CartRL>();
+            services.AddTransient<IWishListBL, WishListBL>();
+            services.AddTransient<IWishListRL, WishListRL>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // JWT 
+            //Genetate token for user login
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    var serverSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:key"]));
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        IssuerSigningKey = serverSecret,
+                        ValidIssuer = Configuration["JWT:Issuer"],
+                        ValidAudience = Configuration["JWT:Audience"]
                     };
                 });
-
-            // Swagger
-            services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(c =>
             {
-                options.SwaggerDoc("BookStore", new OpenApiInfo { Title = "Book Store API", Version = "v1.0" });
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Book Store API",
+                        Description = "Swagger Api",
+                        Version = "v1"
+                    });
 
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Enter Bearer space JWT Token",
                     Name = "Authorization",
-                    In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
                 });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
+                          new OpenApiSecurityScheme
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
                             },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
+                            new string[] {}
                     }
                 });
-                
             });
 
         }
@@ -100,12 +101,6 @@ namespace Book_Store
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/BookStore/swagger.json", "BookStore Api");
-                c.RoutePrefix = string.Empty;
-            });
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -117,6 +112,13 @@ namespace Book_Store
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Book Store");
+                options.RoutePrefix = "";
+            });
         }
     }
 }

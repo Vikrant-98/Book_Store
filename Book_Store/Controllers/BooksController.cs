@@ -26,34 +26,26 @@ namespace Book_Store.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddBooks(Books Info)
         {
             try
             {
                 var user = HttpContext.User;
-                if (user.HasClaim(u => u.Type == "TokenType") && user.HasClaim(u => u.Type == "UserRole"))
-                {
-                    if ((user.Claims.FirstOrDefault(u => u.Type == "TokenType").Value == "login") &&
-                            (user.Claims.FirstOrDefault(u => u.Type == "UserRole").Value == "Admin"))
-                    {
-                        int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                        var data = await _books.AddBooks(adminID, Info);
-                        if (data != null)
-                        {
-                            success = true;
-                            message = "Book Details Added Successfully";
-                            return Ok(new { success, message, data });
-                        }
-                        else
-                        {
-                            message = "No Data Provided";
-                            return NotFound(new { success, message });
-                        }
-                    }
-                }
-                message = "You are not allowed to add Book, Token Invalid!";
-                return BadRequest(new { success, message });
+                
+                int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
+                var data = await _books.AddBooks(adminID, Info);
+                if (data != null)
+                   {
+                       success = true;
+                       message = "Book Details Added Successfully";
+                       return Ok(new { success, message, data });
+                   }
+                   else
+                   {
+                       message = "No Data Provided";
+                       return NotFound(new { success, message });
+                   }                  
             }
             catch (Exception ex)
             {
@@ -85,72 +77,67 @@ namespace Book_Store.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
-
+        /// <summary>
+        /// Delete Books Record Using BookId
+        /// </summary>
+        /// <param name="BookId"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{BookId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteBooks(int BookId)
         {
             try
             {
                 var user = HttpContext.User;
-                if (user.HasClaim(u => u.Type == "TokenType") && user.HasClaim(u => u.Type == "UserRole"))
+                
+                int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
+                var data = await _books.DeleteBooks(BookId);
+                if (data != null)
                 {
-                    if ((user.Claims.FirstOrDefault(u => u.Type == "TokenType").Value == "login") &&
-                            (user.Claims.FirstOrDefault(u => u.Type == "UserRole").Value == "Admin"))
-                    {
-                        int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                        var data = await _books.DeleteBooks(BookId);
-                        if (data != null)
-                        {
-                            success = true;
-                            message = "Book Deleted Successfully";
-                            return Ok(new { success, message, data });
-                        }
-                        else
-                        {
-                            message = "Book not Deleted";
-                            return NotFound(new { success, message });
-                        }
-                    }
+                   success = true;
+                   message = "Book Deleted Successfully";
+                   return Ok(new { success, message, data });
                 }
-                message = "You are not allowed to Delete Book, Token Invalid!";
-                return BadRequest(new { success, message });
+                else
+                {
+                   message = "Book not Deleted";
+                  return NotFound(new { success, message });
+                }
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
             }
         }
-
+        /// <summary>
+        /// Update the Records of book using BookId and Information
+        /// </summary>
+        /// <param name="BookId"></param>
+        /// <param name="Info"></param>
+        /// <returns></returns>
         [Route("{BookId}")]
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateBooks(int BookId, Books Info)
         {
             try
             {
                 var user = HttpContext.User;
-                if (user.HasClaim(u => u.Type == "TokenType") && user.HasClaim(u => u.Type == "UserRole"))
+                int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
+                var data = await _books.UpdateBooks(BookId,Info);
+
+                if (data != null)
                 {
-                    if ((user.Claims.FirstOrDefault(u => u.Type == "TokenType").Value == "login") &&
-                            (user.Claims.FirstOrDefault(u => u.Type == "UserRole").Value == "Admin"))
-                    {
-                        int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                        var data = await _books.UpdateBooks(BookId,Info);
-                        if (data != null)
-                        {
-                            success = true;
-                            message = "Book Updated Successfully";
-                            return Ok(new { success, message, data });
-                        }
-                        else
-                        {
-                            message = "Book Not Updated";
-                            return NotFound(new { success, message });
-                        }
-                    }
+                   success = true;
+                   message = "Book Updated Successfully";
+                   return Ok(new { success, message, data });
                 }
-                message = "You are not allowed to Update Book, Token Invalid!";
-                return BadRequest(new { success, message });
+                else
+                {
+                   message = "Book Not Updated";
+                   return NotFound(new { success, message });
+                }
             }
             catch (Exception ex)
             {

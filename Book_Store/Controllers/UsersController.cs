@@ -32,7 +32,6 @@ namespace Book_Store.Controllers
         {
             _books = data;
             _configuration = configuration;
-
         }
 
         [Route("Register")]
@@ -74,7 +73,7 @@ namespace Book_Store.Controllers
             try
             {
                 var Result = await _books.UserLogin(Info);
-                var jsontoken = GenerateToken(Result, "login");
+                var jsontoken = GenerateToken(Result);
                 if (!Result.Equals(null))
                 {
                     var status = "True";
@@ -93,7 +92,7 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        private string GenerateToken(RegistrationResponse Info, string tokenType)
+        private string GenerateToken(RegistrationResponse Info)
         {
             try
             {
@@ -101,12 +100,11 @@ namespace Book_Store.Controllers
 
                 var signingCreds = new SigningCredentials(symmetricSecuritykey, SecurityAlgorithms.HmacSha256);
 
-                var claims = new[]
+                var claims = new List<Claim>
                 {
-                    new Claim("UserID", Info.UserId.ToString()),
-                    new Claim("Email", Info.Email.ToString()),
-                    new Claim("TokenType", tokenType),
-                    new Claim("UserRole", Info.UserCategory.ToString())
+                    new Claim(ClaimTypes.Role, Info.UserCategory.ToString()),
+                    new Claim("EmailID", Info.Email.ToString()),
+                    new Claim("UserID", Info.UserId.ToString())
                 };
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],
