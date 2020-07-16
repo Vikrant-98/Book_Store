@@ -135,6 +135,7 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new CartBookResponse
                     {
+                        UserID = Convert.ToInt32(dataReader["UserId"]),
                         CartID = Convert.ToInt32(dataReader["CartId"]),
                         BookID = Convert.ToInt32(dataReader["BookId"]),
                         BookName = dataReader["BookName"].ToString(),
@@ -167,6 +168,7 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new CartBookResponse
                     {
+                        UserID = Convert.ToInt32(dataReader["UserId"]),
                         CartID = Convert.ToInt32(dataReader["CartId"]),
                         BookID = Convert.ToInt32(dataReader["BookId"]),
                         BookName = dataReader["BookName"].ToString(),
