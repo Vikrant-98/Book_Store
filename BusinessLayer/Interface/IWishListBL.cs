@@ -10,5 +10,7 @@ namespace BusinessLayer.Interface
     public interface IWishListBL
     {
         Task<WishListResponse> CreateNewWishList(int userID, int BookId);
+
+        Task<List<WishListResponse>> GetListOfWishList(int userID);
     }
 }

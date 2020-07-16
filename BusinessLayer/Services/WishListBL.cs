@@ -22,13 +22,31 @@ namespace BusinessLayer.Services
         {
             try
             {
-                if (userID <= 0 || BookId == 0)
+                if (userID <= 0 || BookId <= 0)
                 {
                     return null;
                 }
                 else
                 {
                     return await _wishList.CreateNewWishList(userID, BookId);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<List<WishListResponse>> GetListOfWishList(int userID)
+        {
+            try
+            {
+                if (userID <= 0 )
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _wishList.GetListOfWishList(userID);
                 }
             }
             catch (Exception ex)

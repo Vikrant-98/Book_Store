@@ -42,7 +42,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                if (userID <= 0 || BookID == 0)
+                if (userID <= 0 || BookID <= 0)
                 {
                     return null;
                 }
