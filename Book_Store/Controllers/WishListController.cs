@@ -57,6 +57,40 @@ namespace Book_Store.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+        /// <summary>
+        /// Get Book from WishList
+        /// </summary>
+        /// <param name="cart">Cart Data</param>
+        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
+        [Route("")]
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetListOfWishList()
+        {
+            try
+            {
+                var user = HttpContext.User;
+
+                int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
+                var data = await _wishList.GetListOfWishList(userID);
+                if (data != null)
+                {
+                    success = true;
+                    message = "Get WishList Successfully";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    message = "No WishList ";
+                    return NotFound(new { success, message });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
 
     }
 

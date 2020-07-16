@@ -117,7 +117,7 @@ namespace Book_Store.Controllers
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],
                     claims,
-                    expires: DateTime.Now.AddHours(1),
+                    expires: DateTime.Now.AddDays(1),
                     signingCredentials: signingCreds);
                 return new JwtSecurityTokenHandler().WriteToken(token);
             }
