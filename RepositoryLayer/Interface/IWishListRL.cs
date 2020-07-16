@@ -10,5 +10,7 @@ namespace RepositoryLayer.Interface
     public interface IWishListRL
     {
         Task<WishListResponse> CreateNewWishList(int userID, int BookId);
+
+        Task<List<WishListResponse>> GetListOfWishList(int userID);
     }
 }
