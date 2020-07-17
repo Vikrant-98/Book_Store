@@ -12,5 +12,10 @@ namespace BusinessLayer.Interface
         Task<WishListResponse> CreateNewWishList(int userID, int BookId);
 
         Task<List<WishListResponse>> GetListOfWishList(int userID);
+
+        Task<bool> DeleteBookFromWishList(int userID, int wishListID, WishList wishListBook);
+
+        Task<CartBookResponse> MoveToCart(int userID, int wishListID, WishList wishListBook);
+
     }
 }

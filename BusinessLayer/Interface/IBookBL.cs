@@ -17,7 +17,7 @@ namespace BusinessLayer.Interface
 
         Task<BooksResponse> UpdateBooks(int BooksId, Books data);
 
-        Task<List<BooksResponse>> SearchBook(BookSearchRequest bookSearch);
+        Task<List<BooksResponse>> SearchBook(string bookSearch);
 
         Task<List<BooksResponse>> SortBooks(string sortingChoice, string sortingType);
     }

@@ -55,5 +55,41 @@ namespace BusinessLayer.Services
             }
         }
 
+        public async Task<bool> DeleteBookFromWishList(int userID, int wishListID, WishList wishListBook)
+        {
+            try
+            {
+                if (userID <= 0 || wishListBook.BookID <= 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return await _wishList.DeleteBookFromWishList(userID, wishListID, wishListBook);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID, WishList wishListBook)
+        {
+            try
+            {
+                if (userID <= 0 || wishListBook == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _wishList.MoveToCart(userID, wishListID, wishListBook);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

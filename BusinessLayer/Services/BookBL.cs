@@ -72,7 +72,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<List<BooksResponse>> SearchBook(BookSearchRequest bookSearch)
+        public async Task<List<BooksResponse>> SearchBook(string bookSearch)
         {
             try
             {

@@ -18,7 +18,7 @@ namespace BusinessLayer.Services
             Books = Data;
         }
 
-        public async Task<RegistrationResponse> UserRegistration(User data)
+        public async Task<UserRegistrationResponse> UserRegistration(User data)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<RegistrationResponse> UserLogin(Login loginDetails)
+        public async Task<UserRegistrationResponse> UserLogin(Login loginDetails)
         {
             try
             {

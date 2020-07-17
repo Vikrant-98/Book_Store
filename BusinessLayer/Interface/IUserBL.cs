@@ -9,9 +9,9 @@ namespace BusinessLayer.Interface
 {
     public interface IUserBL
     {
-        Task<RegistrationResponse> UserRegistration(User data);
+        Task<UserRegistrationResponse> UserRegistration(User data);
 
-        Task<RegistrationResponse> UserLogin(Login loginDetails);
+        Task<UserRegistrationResponse> UserLogin(Login loginDetails);
        
     }
 }
