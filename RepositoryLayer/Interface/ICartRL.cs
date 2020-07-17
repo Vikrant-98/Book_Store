@@ -14,5 +14,9 @@ namespace RepositoryLayer.Interface
         Task<List<CartBookResponse>> GetListOfBooksInCart(int userID);
 
         Task<bool> DeleteBookFromCart(int userID, int cartID);
+
+        Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder Info);
+
+        Task<PlaceOrderResponce> CancelPlaceOdrder(int userID, CalcelOrder Info);
     }
 }

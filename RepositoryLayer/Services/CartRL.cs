@@ -47,10 +47,77 @@ namespace RepositoryLayer.Services
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserId", userID);
                     cmd.Parameters.AddWithValue("@BookId", BookID);
-
+                    cmd.Parameters.AddWithValue("@IsActive", true);
                     conn.Open();
                     SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
                     responseData = BookResponseModel(dataReader);
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Place the Order
+        /// </summary>
+        /// <param name="userID">User-ID</param>
+        /// <param name="cart">Cart Data</param>
+        /// <returns>If Order Place Successfully return Response Data else null or Bad Request</returns>
+        public async Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder Info)
+        {
+            try
+            {
+                PlaceOrderResponce responseData = null;
+                SQLConnection();
+                using (SqlCommand cmd = new SqlCommand("spBookPlaceOrder", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserId", userID);
+                    cmd.Parameters.AddWithValue("@BookId", Info.BookId);
+                    cmd.Parameters.AddWithValue("@CartId", Info.CartId);
+                    cmd.Parameters.AddWithValue("@IsPlaced", true);
+                    cmd.Parameters.AddWithValue("@IsActive", false);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
+                    responseData = OrderResponseModel(dataReader);
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Place the Order
+        /// </summary>
+        /// <param name="userID">User-ID</param>
+        /// <param name="cart">Cart Data</param>
+        /// <returns>If Order Place Successfully return Response Data else null or Bad Request</returns>
+        public async Task<PlaceOrderResponce> CancelPlaceOdrder(int userID, CalcelOrder Info)
+        {
+            try
+            {
+                PlaceOrderResponce responseData = null;
+                SQLConnection();
+                using (SqlCommand cmd = new SqlCommand("spCancelPlaceOrder", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@OrderId", Info.OrderId);
+                    cmd.Parameters.AddWithValue("@UserId", userID);
+                    cmd.Parameters.AddWithValue("@BookId", Info.BookId);
+                    cmd.Parameters.AddWithValue("@CartId", Info.CartId);
+                    cmd.Parameters.AddWithValue("@IsPlaced", false);
+                    cmd.Parameters.AddWithValue("@IsActive", true);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
+                    responseData = OrderResponseModel(dataReader);
                 };
                 return responseData;
             }
@@ -120,7 +187,39 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-
+        
+        /// <summary>
+        /// List of Book Response Method
+        /// </summary>
+        /// <param name="dataReader">Sql Data Reader</param>
+        /// <returns>It return List of Book Response Data</returns>
+        private List<CartBookResponse> ListBookResponseModel(SqlDataReader dataReader)
+        {
+            try
+            {
+                List<CartBookResponse> bookList = new List<CartBookResponse>();
+                CartBookResponse responseData = null;
+                while (dataReader.Read())
+                {
+                    responseData = new CartBookResponse
+                    {
+                        UserID = Convert.ToInt32(dataReader["UserId"]),
+                        CartID = Convert.ToInt32(dataReader["CartId"]),
+                        BookID = Convert.ToInt32(dataReader["BookId"]),
+                        BookName = dataReader["BookName"].ToString(),
+                        Author = dataReader["Authorname"].ToString(),
+                        Pages = Convert.ToInt32(dataReader["Pages"]),
+                        Price = Convert.ToInt32(dataReader["Price"])
+                    };
+                    bookList.Add(responseData);
+                }
+                return bookList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         /// <summary>
         /// Book Response Method
         /// </summary>
@@ -152,33 +251,32 @@ namespace RepositoryLayer.Services
             }
         }
 
-
         /// <summary>
-        /// List of Book Response Method
+        /// Book Response Method
         /// </summary>
         /// <param name="dataReader">Sql Data Reader</param>
-        /// <returns>It return List of Book Response Data</returns>
-        private List<CartBookResponse> ListBookResponseModel(SqlDataReader dataReader)
+        /// <returns>It return Book Response Data</returns>
+        public static PlaceOrderResponce OrderResponseModel(SqlDataReader dataReader)
         {
             try
             {
-                List<CartBookResponse> bookList = new List<CartBookResponse>();
-                CartBookResponse responseData = null;
+                PlaceOrderResponce responseData = null;
                 while (dataReader.Read())
                 {
-                    responseData = new CartBookResponse
+                    responseData = new PlaceOrderResponce
                     {
-                        UserID = Convert.ToInt32(dataReader["UserId"]),
-                        CartID = Convert.ToInt32(dataReader["CartId"]),
-                        BookID = Convert.ToInt32(dataReader["BookId"]),
+                        OrderId = Convert.ToInt32(dataReader["OrderId"]),
+                        UserId = Convert.ToInt32(dataReader["UserId"]),
+                        CartId = Convert.ToInt32(dataReader["CartId"]),
+                        BookId = Convert.ToInt32(dataReader["BookId"]),
                         BookName = dataReader["BookName"].ToString(),
-                        Author = dataReader["Authorname"].ToString(),
+                        AuthorName = dataReader["Authorname"].ToString(),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Price = Convert.ToInt32(dataReader["Price"])
+                        Price = Convert.ToInt32(dataReader["Price"]),
+                        IsPlace = Convert.ToBoolean(dataReader["IsPlaced"])
                     };
-                    bookList.Add(responseData);
                 }
-                return bookList;
+                return responseData;
             }
             catch (Exception ex)
             {
