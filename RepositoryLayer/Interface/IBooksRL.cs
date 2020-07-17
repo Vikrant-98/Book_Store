@@ -17,7 +17,7 @@ namespace RepositoryLayer.Interface
 
         Task<BooksResponse> UpdateBooks(int BooksId, Books data);
 
-        Task<List<BooksResponse>> BookSearch(BookSearchRequest bookSearch);
+        Task<List<BooksResponse>> BookSearch(string bookSearch);
 
         Task<List<BooksResponse>> SortBooks(string sortingChoice, string sortingType);
     }

@@ -46,6 +46,7 @@ namespace RepositoryLayer.Services
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserID", userID);
                     cmd.Parameters.AddWithValue("@BookID", BookID);
+                    cmd.Parameters.AddWithValue("@IsMoved", false);
 
                     conn.Open();
                     SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
@@ -90,7 +91,39 @@ namespace RepositoryLayer.Services
             }
         }
         /// <summary>
-        /// responce for WishList
+        /// Add Move Book Details in the database
+        /// </summary>
+        /// <param name="userID">UserID</param>
+        /// <param name="wishListID">WishListID</param>
+        /// <param name="wishListBook">Wish List Book Data</param>
+        /// <returns>If Data Found return Response Data else null or Exeption</returns>
+        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID, WishList wishListBook)
+        {
+            try
+            {
+                CartBookResponse responseData = null;
+                SQLConnection();
+                using (SqlCommand cmd = new SqlCommand("spMoveBookToCart", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+                    cmd.Parameters.AddWithValue("@WishListID", wishListID);
+                    cmd.Parameters.AddWithValue("@BookID", wishListBook.BookID);
+                    cmd.Parameters.AddWithValue("@IsMoved", true);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await cmd.ExecuteReaderAsync();
+                    responseData = CartRL.BookResponseModel(dataReader);
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Responce for WishList
         /// </summary>
         /// <param name="dataReader"></param>
         /// <returns></returns>
@@ -145,6 +178,38 @@ namespace RepositoryLayer.Services
                     bookList.Add(responseData);
                 }
                 return bookList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Delete Book From the Wish List in the database
+        /// </summary>
+        /// <param name="userID">User-ID</param>
+        /// <param name="wishList">Wish List Data</param>
+        /// <returns>If Data Deleted Successfull return true else false or Exception</returns>
+        public async Task<bool> DeleteBookFromWishList(int userID, int wishListID, WishList wishListBook)
+        {
+            try
+            {
+                SQLConnection();
+                using (SqlCommand cmd = new SqlCommand("spDeleteBookFromWishList", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+                    cmd.Parameters.AddWithValue("@WishListID", wishListID);
+                    cmd.Parameters.AddWithValue("@BookID", wishListBook.BookID);
+
+                    conn.Open();
+                    int count = await cmd.ExecuteNonQueryAsync();
+                    if (count >= 0)
+                    {
+                        return true;
+                    }
+                };
+                return false;
             }
             catch (Exception ex)
             {

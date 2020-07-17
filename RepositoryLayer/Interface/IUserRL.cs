@@ -9,8 +9,8 @@ namespace RepositoryLayer.Interface
 {
     public interface IUserRL
     {
-        Task<RegistrationResponse> UserRegistration(User data);
+        Task<UserRegistrationResponse> UserRegistration(User data);
 
-        Task<RegistrationResponse> UserLogin(Login data);
+        Task<UserRegistrationResponse> UserLogin(Login data);
     }
 }

@@ -36,11 +36,11 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> UserRegistration(User data)
+        public async Task<UserRegistrationResponse> UserRegistration(User data)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                UserRegistrationResponse responseData = null;
 
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
                 
@@ -78,11 +78,11 @@ namespace RepositoryLayer.Services
         }
 
 
-        public async Task<RegistrationResponse> UserLogin(Login data)
+        public async Task<UserRegistrationResponse> UserLogin(Login data)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                UserRegistrationResponse responseData = null;
 
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
                 SQLConnection();
@@ -104,14 +104,14 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        private RegistrationResponse RegistrationResponseModel(SqlDataReader dataReader)
+        private UserRegistrationResponse RegistrationResponseModel(SqlDataReader dataReader)
         {
             try
             {
-                RegistrationResponse responseData = null;
+                UserRegistrationResponse responseData = null;
                 while (dataReader.Read())
                 {
-                    responseData = new RegistrationResponse
+                    responseData = new UserRegistrationResponse
                     {
                         UserId = Convert.ToInt32(dataReader["UserId"]),
                         FirstName = dataReader["FirstName"].ToString(),

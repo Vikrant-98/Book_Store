@@ -171,7 +171,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="bookSearch">Book Search Data</param>
         /// <returns>If Data Fetched return Response Data else null or Exception</returns>
-        public async Task<List<BooksResponse>> BookSearch(BookSearchRequest bookSearch)
+        public async Task<List<BooksResponse>> BookSearch(string bookSearch)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spSearchBookByName", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@search", bookSearch.Search);
+                    command.Parameters.AddWithValue("@search", bookSearch);
 
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
