@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CommonLayer.Responce
 {
-    public class RegistrationResponse
+    public class UserRegistrationResponse
     {
         public int UserId { get; set; }
         //First Name

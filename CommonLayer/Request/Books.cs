@@ -18,9 +18,4 @@ namespace CommonLayer.Request
 
         public int Available { get; set; }
     }
-
-    public class BookSearchRequest
-    {
-        public string Search { get; set; }
-    }
 }
