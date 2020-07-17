@@ -75,5 +75,43 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder Info)
+        {
+            try
+            {
+                if (userID <= 0 || Info == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _cart.BookPlaceOdrder(userID, Info);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<PlaceOrderResponce> CancelPlaceOdrder(int userID, CalcelOrder Info)
+        {
+            try
+            {
+                if (userID <= 0 || Info == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _cart.CancelPlaceOdrder(userID, Info);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
