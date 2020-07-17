@@ -92,7 +92,7 @@ namespace Book_Store.Controllers
                 throw new Exception(e.Message);
             }
         }
-        private string GenerateToken(RegistrationResponse Info)
+        private string GenerateToken(UserRegistrationResponse Info)
         {
             try
             {

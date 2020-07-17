@@ -54,11 +54,19 @@ namespace Book_Store.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetListOfBooks()
+        public async Task<IActionResult> GetListOfBooks(string OrderBy,string type,string search)
         {
             try
             {
                 var data = await _books.GetListOfBooks();
+                if (search != null)
+                {
+                    data = await _books.SearchBook(search);
+                }
+                if (OrderBy != null && type != null)
+                {
+                    data = await _books.SortBooks(OrderBy, type);
+                }
                 if (data != null)
                 {
                     var success = true;
@@ -142,66 +150,6 @@ namespace Book_Store.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Search Book by Name
-        /// </summary>
-        /// <param name="bookSearch">Book Search Data</param>
-        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [HttpPost]
-        [Route("Search")]
-        public async Task<IActionResult> BookSearch(BookSearchRequest bookSearch)
-        {
-            try
-            {
-                var data = await _books.SearchBook(bookSearch);
-                if (data != null && data.Count != 0)
-                {
-                    var success = true;
-                    var message = "Book Fetched Successfully";
-                    return Ok(new { success, message, data });
-                }
-                else
-                {
-                    var message = "Book Not Found";
-                    var success = false;
-                    return NotFound(new { success, message });
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        /// <summary>
-        /// Shows Books in Ascending order
-        /// </summary>
-        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [HttpGet]
-        [Route("{Choice}/Sort/{Type}")]
-        public async Task<IActionResult> SortBooks(string Choice, string Type)
-        {
-            try
-            {
-                var data = await _books.SortBooks(Choice,Type);
-                if (data != null)
-                {
-                    var success = true;
-                    var message = "Sorted Books Fetched Successfully";
-                    return Ok(new { success, message, data });
-                }
-                else
-                {
-                    var message = "Books Not Found";
-                    var success = false;
-                    return NotFound(new { success, message });
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
             }
         }
     }
