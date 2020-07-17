@@ -132,6 +132,7 @@ namespace Book_Store.Controllers
         /// <param name="wishListBook">Wish List Book Data</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
         [HttpPost("{wishListID}/Move")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> MoveToCart(int wishListID, WishList wishListBook)
         {
             try
