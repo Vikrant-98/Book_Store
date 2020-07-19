@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Book_Store.MSMQ_Service;
 using BusinessLayer.Interface;
 using CommonLayer.Request;
+using MessagrListner;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,7 @@ namespace Book_Store.Controllers
     {
 
         private readonly IOrderBL _orderBL;
+        MessageSender msmqSender = new MessageSender();
 
         private static bool success;
         private static string message;
@@ -77,6 +80,16 @@ namespace Book_Store.Controllers
                 {
                     success = true;
                     message = "Place Order Successfully";
+                    string msmqRecordInQueue = message + "\nInformation :"
+                    + "\nUserID :"+ data.UserId
+                    + "\nBookID :" + data.BookId
+                    + "\nBook Name :" + data.BookName
+                    + "\nAuthor Name :" + data.AuthorName
+                    + "\nBooks Quantity :" + data.Quantity
+                    + "\nTotal Cost :" + data.TotalPrice;
+                    msmqSender.Message(msmqRecordInQueue);
+                    MessageListner msg = new MessageListner();
+
                     return Ok(new { success, message, data });
                 }
                 else
