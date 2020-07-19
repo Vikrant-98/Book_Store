@@ -33,7 +33,7 @@ namespace Book_Store.MSMQ_Service
             MyMessage.Body = SendMessage;
 
             //Message lable
-            MyMessage.Label = "UserRegistration";
+            MyMessage.Label = "Registration";
 
             //Message fetched on the basis of priority
             MyMessage.Priority = MessagePriority.Normal;

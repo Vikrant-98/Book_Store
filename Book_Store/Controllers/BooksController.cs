@@ -15,14 +15,14 @@ namespace Book_Store.Controllers
     public class BooksController : ControllerBase
     {
 
-        private readonly IBookBL _books;
+        private readonly IBookBL _booksBL;
 
         private static bool success;
         private static string message;
 
         public BooksController(IBookBL data)
         {
-            _books = data;
+            _booksBL = data;
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace Book_Store.Controllers
                 var user = HttpContext.User;
                 
                 int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                var data = await _books.AddBooks(adminID, Info);
+                var data = await _booksBL.AddBooks(adminID, Info);
                 if (data != null)
                    {
                        success = true;
@@ -54,18 +54,18 @@ namespace Book_Store.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetListOfBooks(string OrderBy,string type,string search)
+        public async Task<IActionResult> GetListOfBooks(string Search,string OrderBy,string Type)
         {
             try
             {
-                var data = await _books.GetListOfBooks();
-                if (search != null)
+                var data = await _booksBL.GetListOfBooks();
+                if (Search != null)
                 {
-                    data = await _books.SearchBook(search);
+                    data = await _booksBL.SearchBook(Search);
                 }
-                if (OrderBy != null && type != null)
+                else if (OrderBy != null)
                 {
-                    data = await _books.SortBooks(OrderBy, type);
+                    data = await _booksBL.SortBooks(OrderBy, Type);
                 }
                 if (data != null)
                 {
@@ -100,12 +100,12 @@ namespace Book_Store.Controllers
                 var user = HttpContext.User;
                 
                 int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                var data = await _books.DeleteBooks(BookId);
-                if (data != null)
+                var data = await _booksBL.DeleteBooks(BookId);
+                if (data == true)
                 {
                    success = true;
                    message = "Book Deleted Successfully";
-                   return Ok(new { success, message, data });
+                   return Ok(new { success, message });
                 }
                 else
                 {
@@ -127,13 +127,13 @@ namespace Book_Store.Controllers
         [Route("{BookId}")]
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateBooks(int BookId, Books Info)
+        public async Task<IActionResult> UpdateBooks(int BookId, UpdateBooks Info)
         {
             try
             {
                 var user = HttpContext.User;
                 int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                var data = await _books.UpdateBooks(BookId,Info);
+                var data = await _booksBL.UpdateBooks(BookId,Info);
 
                 if (data != null)
                 {

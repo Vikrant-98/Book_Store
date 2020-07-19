@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLayer.Interface;
-using BusinessLayer.Services;
 using CommonLayer.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,55 +12,21 @@ namespace Book_Store.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CartController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        private readonly ICartBL _cartBL;
+
+        private readonly IOrderBL _orderBL;
 
         private static bool success;
         private static string message;
 
-        public CartController(ICartBL cart)
+        public OrderController(IOrderBL orderBL)
         {
-            _cartBL = cart;
+            _orderBL = orderBL;
         }
 
         /// <summary>
-        /// Add Book into Cart
-        /// </summary>
-        /// <param name="cart">Cart Data</param>
-        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [Route("")]
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddBookIntoCart(Cart info)
-        {
-            try
-            {
-                var user = HttpContext.User;
-                
-                int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _cartBL.AddBookIntoCart(userID,info);
-                if (data != null)
-                {
-                    success = true;
-                    message = "Added to Card Successfully";
-                    return Ok(new { success, message, data });
-                }
-                else
-                {
-                    message = "No Cart Added";
-                    return NotFound(new { success, message });
-                }
-                    
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Shows All Books in Cart
+        /// Shows All Orders Details
         /// </summary>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
         [HttpGet]
@@ -71,20 +36,20 @@ namespace Book_Store.Controllers
             try
             {
                 var user = HttpContext.User;
-                
+
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _cartBL.GetListOfBooksInCart(userID);
+                var data = await _orderBL.GetListOfBooks(userID);
                 if (data != null)
                 {
                     success = true;
-                    message = "List of Books Fetched Successfully";
+                    message = "List of Order Fetched Successfully";
                     return Ok(new { success, message, data });
                 }
                 else
                 {
                     message = "No Data Found";
                     return NotFound(new { success, message });
-                }  
+                }
             }
             catch (Exception ex)
             {
@@ -93,36 +58,74 @@ namespace Book_Store.Controllers
         }
 
         /// <summary>
-        /// Delete Book From Cart
+        /// Add Book into Cart
         /// </summary>
-        /// <param name="cartID">CartID</param>
-        /// <returns>If Data Deleted return Ok else Not Found or Bad Request</returns>
-        [HttpDelete("{cartID}")]
+        /// <param name="cart">Cart Data</param>
+        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
+        [Route("{CartId}/PlaceOrder")]
+        [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteBookFromCart(int cartID)
+        public async Task<IActionResult> BookPlaceOdrder(int CartId)
         {
             try
             {
                 var user = HttpContext.User;
-                
+
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _cartBL.DeleteBookFromCart(userID, cartID);
-                if (data)
+                var data = await _orderBL.BookPlaceOdrder(userID, CartId);
+                if (data != null)
                 {
                     success = true;
-                    message = "Book Removed from Cart Successfully";
-                    return Ok(new { success, message });
+                    message = "Place Order Successfully";
+                    return Ok(new { success, message, data });
                 }
                 else
                 {
-                     message = "No Cart is present with this ID: " + cartID;
-                     return NotFound(new { success, message });
-                }    
+                    message = "No Order Place";
+                    return NotFound(new { success, message });
+                }
+
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex.Message });
             }
         }
+
+        /// <summary>
+        /// Add Book into Cart
+        /// </summary>
+        /// <param name="cart">Cart Data</param>
+        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
+        [Route("{orderID}/CancelOrder")]
+        [HttpPut]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> CancelPlaceOdrder(int orderID)
+        {
+            try
+            {
+                var user = HttpContext.User;
+
+                int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
+                var data = await _orderBL.CancelPlaceOdrder(userID, orderID);
+                if (data == true)
+                {
+                    success = true;
+                    message = "Order Canceled Successfully";
+                    return Ok(new { success, message});
+                }
+                else
+                {
+                    message = "Order Not Cancled";
+                    return NotFound(new { success, message });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
     }
 }

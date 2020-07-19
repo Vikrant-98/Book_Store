@@ -45,6 +45,8 @@ namespace Book_Store
             services.AddTransient<ICartRL, CartRL>();
             services.AddTransient<IWishListBL, WishListBL>();
             services.AddTransient<IWishListRL, WishListRL>();
+            services.AddTransient<IOrderBL, OrderBL>();
+            services.AddTransient<IOrderRL, OrderRL>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

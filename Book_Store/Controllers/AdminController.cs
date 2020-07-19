@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Book_Store.MSMQ_Service;
-using Book_Store.TokenGeneration;
+﻿using Book_Store.MSMQ_Service;
 using BusinessLayer.Interface;
 using CommonLayer.Responce;
 using CommonLayer.Services;
 using MessagrListner;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Book_Store.Controllers
 {
@@ -22,14 +19,14 @@ namespace Book_Store.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAdminBL _books;
+        private readonly IAdminBL _adminBL;
         MessageSender msmqSender = new MessageSender();
         public static string _admin = "Admin";
         private IConfiguration _configuration;
         
         public AdminController(IAdminBL data, IConfiguration configuration)
         {
-            _books = data;
+            _adminBL = data;
             _configuration = configuration;
 
         }
@@ -40,12 +37,12 @@ namespace Book_Store.Controllers
         {
             try
             {
-                var data = await _books.AdminRegistration(Info);
+                var data = await _adminBL.AdminRegistration(Info);
                 if (!data.Equals(null))
                 {
                     var status = true;
-                    var Message = "User Details Entered Succesfully";
-                    string msmqRecordInQueue = Convert.ToString(Info.FirstName)
+                    var Message = "Admin Registered Succesfully";
+                    string msmqRecordInQueue = Convert.ToString(Info.FirstName)+" "
                     + Convert.ToString(Info.LastName) 
                     + "\n" + Message + "\n Email : "
                     + Convert.ToString(Info.Password);
@@ -58,7 +55,7 @@ namespace Book_Store.Controllers
                 else
                 {
                     var status = false;
-                    var Message = "User Details Entered Failed";
+                    var Message = "Admin Registeration Failed Try Again";
                     return this.BadRequest(new { status, Message });
                 }
             }
@@ -73,10 +70,11 @@ namespace Book_Store.Controllers
         {
             try
             {
-                var Result = await _books.AdminLogin(Info);
-                var jsontoken = GenerateToken(Result);
+                var Result = await _adminBL.AdminLogin(Info);
+                
                 if (!Result.Equals(null))
                 {
+                    var jsontoken = GenerateToken(Result);
                     var status = "True";
                     var Message = "Login Successful";
                     return Ok(new { status, Message, Result, jsontoken });
@@ -111,8 +109,8 @@ namespace Book_Store.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Role, Info.UserCategory.ToString()),
-                    new Claim("EmailID", Info.Email.ToString()),
-                    new Claim("AdminID", Info.AdminId.ToString())
+                    new Claim("EmailID", Info.EmailID.ToString()),
+                    new Claim("AdminID", Info.AdminID.ToString())
                 };
                 var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
                     _configuration["Jwt:Issuer"],

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessLayer.Interface;
+﻿using BusinessLayer.Interface;
 using CommonLayer.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Book_Store.Controllers
 {
@@ -14,14 +13,14 @@ namespace Book_Store.Controllers
     [ApiController]
     public class WishListController : ControllerBase
     {
-        private readonly IWishListBL _wishList;
+        private readonly IWishListBL _wishListBL;
 
         private static bool success;
         private static string message;
 
         public WishListController(IWishListBL wishList)
         {
-            _wishList = wishList;
+            _wishListBL = wishList;
         }
 
         /// <summary>
@@ -29,17 +28,17 @@ namespace Book_Store.Controllers
         /// </summary>
         /// <param name="cart">Cart Data</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [Route("{BookID}")]
+        [Route("")]
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddBookIntoWishList(int BookID)
+        public async Task<IActionResult> AddBookIntoWishList(WishList info)
         {
             try
             {
                 var user = HttpContext.User;
 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _wishList.CreateNewWishList(userID, BookID);
+                var data = await _wishListBL.CreateNewWishList(userID, info);
                 if (data != null)
                 {
                     success = true;
@@ -73,7 +72,7 @@ namespace Book_Store.Controllers
                 var user = HttpContext.User;
 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _wishList.GetListOfWishList(userID);
+                var data = await _wishListBL.GetListOfWishList(userID);
                 if (data != null)
                 {
                     success = true;
@@ -101,13 +100,13 @@ namespace Book_Store.Controllers
         /// <returns>If Data Deleted return Ok else Not Found or Bad Request</returns>
         [HttpDelete("{wishListID}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeleteBookFromCart(int wishListID, WishList wishListBook)
+        public async Task<IActionResult> DeleteBookFromCart(int wishListID)
         {
             try
             {
                 var user = HttpContext.User;
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _wishList.DeleteBookFromWishList(userID, wishListID, wishListBook);
+                var data = await _wishListBL.DeleteBookFromWishList(userID, wishListID);
                 if (data)
                 {
                     success = true;
@@ -133,14 +132,14 @@ namespace Book_Store.Controllers
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
         [HttpPost("{wishListID}/Move")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> MoveToCart(int wishListID, WishList wishListBook)
+        public async Task<IActionResult> MoveToCart(int wishListID)
         {
             try
             {
                 var user = HttpContext.User;
                 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _wishList.MoveToCart(userID, wishListID, wishListBook);
+                var data = await _wishListBL.MoveToCart(userID, wishListID);
                 if (data != null)
                 {
                     success = true;
