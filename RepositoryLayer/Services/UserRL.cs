@@ -54,12 +54,9 @@ namespace RepositoryLayer.Services
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@FirstName", data.FirstName);
                     command.Parameters.AddWithValue("@LastName", data.LastName);
-                    command.Parameters.AddWithValue("@Email", data.Email);
+                    command.Parameters.AddWithValue("@EmailID", data.EmailID);
                     command.Parameters.AddWithValue("@Password", Password);
                     command.Parameters.AddWithValue("@UserCategory", _user);
-                    command.Parameters.AddWithValue("@Address", data.Address);
-                    command.Parameters.AddWithValue("@City", data.City);
-                    command.Parameters.AddWithValue("@PinCode", data.PinCode);
                     command.Parameters.AddWithValue("@CreateDate", createDate);
                     command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
@@ -90,7 +87,7 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spUserLogin", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@Email", data.Email);
+                    command.Parameters.AddWithValue("@EmailID", data.EmailID);
                     command.Parameters.AddWithValue("@Password", Password);
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
@@ -113,14 +110,11 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new UserRegistrationResponse
                     {
-                        UserId = Convert.ToInt32(dataReader["UserId"]),
+                        UserID = Convert.ToInt32(dataReader["UserID"]),
                         FirstName = dataReader["FirstName"].ToString(),
                         LastName = dataReader["LastName"].ToString(),
-                        Email = dataReader["Email"].ToString(),
+                        EmailID = dataReader["EmailID"].ToString(),
                         UserCategory = dataReader["UserCategory"].ToString(),
-                        City = dataReader["City"].ToString(),
-                        Address = dataReader["Address"].ToString(),
-                        PinCode = Convert.ToInt32(dataReader["Pincode"]),
                         CreatedDate = Convert.ToDateTime(dataReader["CreateDate"]),
                         ModifiedDate = Convert.ToDateTime(dataReader["ModifiedDate"])
                     };

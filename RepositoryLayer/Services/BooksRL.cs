@@ -43,7 +43,7 @@ namespace RepositoryLayer.Services
                 BooksResponse responseData = null;
 
                 DateTime createDate = DateTime.Now;
-                DateTime modifiedDate = DateTime.Now;
+                DateTime modifiedDate = createDate;
 
                 SQLConnection();
 
@@ -51,12 +51,15 @@ namespace RepositoryLayer.Services
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@BookName", data.BookName);
-                    command.Parameters.AddWithValue("@AdminId", adminId);
+                    command.Parameters.AddWithValue("@AdminID", adminId);
                     command.Parameters.AddWithValue("@AuthorName", data.AuthorName);
                     command.Parameters.AddWithValue("@Price", data.Price);
                     command.Parameters.AddWithValue("@Pages", data.Pages);
                     command.Parameters.AddWithValue("@Description", data.Description);
-                    command.Parameters.AddWithValue("@Available", data.Available);
+                    command.Parameters.AddWithValue("@BooksAvailable", data.Available);
+                    command.Parameters.AddWithValue("@IsDelete", false);
+                    command.Parameters.AddWithValue("@CreateDate", createDate);
+                    command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
@@ -101,23 +104,26 @@ namespace RepositoryLayer.Services
         /// Delete Books from the database
         /// </summary>
         /// <returns>Data get deleted or Exception get thrown</returns>
-        public async Task<List<BooksResponse>> DeleteBooks(int BookId)
+        public async Task<bool> DeleteBooks(int BookId)
         {
             try
             {
-                List<BooksResponse> deleteBook = null;
+                
                 SQLConnection();
-                deleteBook = new List<BooksResponse>();
+                
                 using (SqlCommand command = new SqlCommand("spDeleteBookById", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@BookId", BookId);
-
                     conn.Open();
-                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
-                    deleteBook = ListBookResponseModel(dataReader);
+                    int count = await command.ExecuteNonQueryAsync();
+                    if (count >= 0)
+                    {
+                        return true;
+                    }
                 };
-                return deleteBook;
+                
+                return false;
             }
             catch (Exception ex)
             {
@@ -131,13 +137,12 @@ namespace RepositoryLayer.Services
         /// <param name="adminId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public async Task<BooksResponse> UpdateBooks(int BooksId, Books data)
+        public async Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data)
         {
             try
             {
                 BooksResponse responseData = null;
 
-                DateTime createDate = DateTime.Now;
                 DateTime modifiedDate = DateTime.Now;
 
                 SQLConnection();
@@ -145,13 +150,14 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spUpdateBookById", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookId", BooksId);
+                    command.Parameters.AddWithValue("@BookID", BooksId);
                     command.Parameters.AddWithValue("@BookName", data.BookName);
                     command.Parameters.AddWithValue("@AuthorName", data.AuthorName);
                     command.Parameters.AddWithValue("@Price", data.Price);
                     command.Parameters.AddWithValue("@Pages", data.Pages);
                     command.Parameters.AddWithValue("@Description", data.Description);
-                    command.Parameters.AddWithValue("@Available", data.Available);
+                    command.Parameters.AddWithValue("@BooksAvailable", data.Available);
+                    command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
@@ -274,14 +280,14 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new BooksResponse
                     {
-                        BookId = Convert.ToInt32(dataReader["BooksId"]),
-                        AdminId = Convert.ToInt32(dataReader["AdminId"]),
+                        BookId = Convert.ToInt32(dataReader["BookID"]),
+                        AdminId = Convert.ToInt32(dataReader["AdminID"]),
                         BookName = dataReader["BookName"].ToString(),
-                        AuthorName = dataReader["Authorname"].ToString(),
+                        AuthorName = dataReader["AuthorName"].ToString(),
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["Available"])
+                        Available = Convert.ToInt32(dataReader["BooksAvailable"])
                     };
                 }
                 return responseData;
@@ -306,14 +312,14 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new BooksResponse
                     {
-                        BookId = Convert.ToInt32(dataReader["BooksId"]),
-                        AdminId = Convert.ToInt32(dataReader["AdminId"]),
+                        BookId = Convert.ToInt32(dataReader["BookID"]),
+                        AdminId = Convert.ToInt32(dataReader["AdminID"]),
                         BookName = dataReader["BookName"].ToString(),
-                        AuthorName = dataReader["Authorname"].ToString(),
+                        AuthorName = dataReader["AuthorName"].ToString(),
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["Available"])
+                        Available = Convert.ToInt32(dataReader["BooksAvailable"])
                     };
                     bookList.Add(responseData);
                 }

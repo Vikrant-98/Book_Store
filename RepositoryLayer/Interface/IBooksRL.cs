@@ -13,9 +13,9 @@ namespace RepositoryLayer.Interface
 
         Task<List<BooksResponse>> GetListOfBooks();
 
-        Task<List<BooksResponse>> DeleteBooks(int BookId);
+        Task<bool> DeleteBooks(int BookId);
 
-        Task<BooksResponse> UpdateBooks(int BooksId, Books data);
+        Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data);
 
         Task<List<BooksResponse>> BookSearch(string bookSearch);
 
