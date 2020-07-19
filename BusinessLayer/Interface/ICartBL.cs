@@ -9,14 +9,11 @@ namespace BusinessLayer.Interface
 {
     public interface ICartBL
     {
-        Task<CartBookResponse> AddBookIntoCart(int userID, int BookID);
+        Task<CartBookResponse> AddBookIntoCart(int userID, Cart data);
 
         Task<List<CartBookResponse>> GetListOfBooksInCart(int userID);
 
         Task<bool> DeleteBookFromCart(int userID, int cartID);
 
-        Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder Info);
-
-        Task<PlaceOrderResponce> CancelPlaceOdrder(int userID, CalcelOrder Info);
     }
 }

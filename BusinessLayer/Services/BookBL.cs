@@ -11,11 +11,11 @@ namespace BusinessLayer.Services
 {
     public class BookBL : IBookBL
     {
-        private IBooksRL _books;
+        private IBooksRL _booksRL;
 
         public BookBL(IBooksRL Data)
         {
-            _books = Data;
+            _booksRL = Data;
         }
 
         public async Task<BooksResponse> AddBooks(int adminId, Books data)
@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
                 if (data == null)
                     return null;
                 else
-                    return await _books.AddBooks(adminId,data);
+                    return await _booksRL.AddBooks(adminId,data);
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _books.GetListOfBooks();
+                return await _booksRL.GetListOfBooks();
             }
             catch (Exception ex)
             {
@@ -45,11 +45,18 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<List<BooksResponse>> DeleteBooks(int BookId)
+        public async Task<bool> DeleteBooks(int BookID)
         {
             try
             {
-                return await _books.DeleteBooks(BookId);
+                if (BookID < 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return await _booksRL.DeleteBooks(BookID);
+                }
             }
             catch (Exception ex)
             {
@@ -57,14 +64,14 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<BooksResponse> UpdateBooks(int BooksId, Books data)
+        public async Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data)
         {
             try
             {
                 if (data == null)
                     return null;
                 else
-                    return await _books.UpdateBooks(BooksId, data);
+                    return await _booksRL.UpdateBooks(BooksId, data);
             }
             catch (Exception ex)
             {
@@ -79,7 +86,7 @@ namespace BusinessLayer.Services
                 if (bookSearch == null)
                     return null;
                 else
-                    return await _books.BookSearch(bookSearch);
+                    return await _booksRL.BookSearch(bookSearch);
             }
             catch (Exception ex)
             {
@@ -90,7 +97,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _books.SortBooks(sortingChoice,sortingType);
+                return await _booksRL.SortBooks(sortingChoice,sortingType);
             }
             catch (Exception ex)
             {

@@ -11,11 +11,11 @@ namespace BusinessLayer.Services
 {
     public class AdminBL : IAdminBL
     {
-        private IAdminRL Books;
+        private IAdminRL _adminRL;
 
         public AdminBL(IAdminRL Data)
         {
-            Books = Data;
+            _adminRL = Data;
         }
 
         public async Task<AdminRegistrationResponse> AdminRegistration(User data)
@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
                 if (data == null)
                     return null;
                 else
-                    return await Books.AdminRegistration(data);
+                    return await _adminRL.AdminRegistration(data);
             }
             catch (Exception ex)
             {
@@ -36,10 +36,10 @@ namespace BusinessLayer.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(loginDetails.Email) || string.IsNullOrWhiteSpace(loginDetails.Password))
+                if (loginDetails == null)
                     return null;
                 else
-                    return await Books.AdminLogin(loginDetails);
+                    return await _adminRL.AdminLogin(loginDetails);
             }
             catch (Exception ex)
             {

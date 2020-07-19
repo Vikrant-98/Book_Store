@@ -9,13 +9,13 @@ namespace BusinessLayer.Interface
 {
     public interface IWishListBL
     {
-        Task<WishListResponse> CreateNewWishList(int userID, int BookId);
+        Task<WishListResponse> CreateNewWishList(int userID, WishList data);
 
         Task<List<WishListResponse>> GetListOfWishList(int userID);
 
-        Task<bool> DeleteBookFromWishList(int userID, int wishListID, WishList wishListBook);
+        Task<bool> DeleteBookFromWishList(int userID, int wishListID);
 
-        Task<CartBookResponse> MoveToCart(int userID, int wishListID, WishList wishListBook);
+        Task<CartBookResponse> MoveToCart(int userID, int wishListID);
 
     }
 }

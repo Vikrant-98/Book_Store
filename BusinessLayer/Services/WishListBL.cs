@@ -11,24 +11,24 @@ namespace BusinessLayer.Services
 {
     public class WishListBL : IWishListBL
     {
-        private readonly IWishListRL _wishList;
+        private readonly IWishListRL _wishListRL;
 
         public WishListBL(IWishListRL wishList)
         {
-            _wishList = wishList;
+            _wishListRL = wishList;
         }
 
-        public async Task<WishListResponse> CreateNewWishList(int userID, int BookId)
+        public async Task<WishListResponse> CreateNewWishList(int userID, WishList data)
         {
             try
             {
-                if (userID <= 0 || BookId <= 0)
+                if (userID <= 0 || data == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return await _wishList.CreateNewWishList(userID, BookId);
+                    return await _wishListRL.CreateNewWishList(userID, data);
                 }
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace BusinessLayer.Services
                 }
                 else
                 {
-                    return await _wishList.GetListOfWishList(userID);
+                    return await _wishListRL.GetListOfWishList(userID);
                 }
             }
             catch (Exception ex)
@@ -55,17 +55,17 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<bool> DeleteBookFromWishList(int userID, int wishListID, WishList wishListBook)
+        public async Task<bool> DeleteBookFromWishList(int userID, int wishListID)
         {
             try
             {
-                if (userID <= 0 || wishListBook.BookID <= 0)
+                if (userID <= 0 )
                 {
                     return false;
                 }
                 else
                 {
-                    return await _wishList.DeleteBookFromWishList(userID, wishListID, wishListBook);
+                    return await _wishListRL.DeleteBookFromWishList(userID, wishListID);
                 }
             }
             catch (Exception ex)
@@ -73,17 +73,17 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID, WishList wishListBook)
+        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID)
         {
             try
             {
-                if (userID <= 0 || wishListBook == null)
+                if (userID <= 0 )
                 {
                     return null;
                 }
                 else
                 {
-                    return await _wishList.MoveToCart(userID, wishListID, wishListBook);
+                    return await _wishListRL.MoveToCart(userID, wishListID);
                 }
             }
             catch (Exception ex)

@@ -11,11 +11,11 @@ namespace BusinessLayer.Services
 {
     public class UserBL : IUserBL
     {
-        private IUserRL Books;
+        private IUserRL _userRL;
 
         public UserBL(IUserRL Data)
         {
-            Books = Data;
+            _userRL = Data;
         }
 
         public async Task<UserRegistrationResponse> UserRegistration(User data)
@@ -25,7 +25,7 @@ namespace BusinessLayer.Services
                 if (data == null)
                     return null;
                 else
-                    return await Books.UserRegistration(data);
+                    return await _userRL.UserRegistration(data);
             }
             catch (Exception ex)
             {
@@ -36,10 +36,10 @@ namespace BusinessLayer.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(loginDetails.Email) || string.IsNullOrWhiteSpace(loginDetails.Password))
+                if (loginDetails == null)
                     return null;
                 else
-                    return await Books.UserLogin(loginDetails);
+                    return await _userRL.UserLogin(loginDetails);
             }
             catch (Exception ex)
             {

@@ -9,27 +9,39 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class CartBL : ICartBL
+    public class OrderBL : IOrderBL
     {
 
-        private readonly ICartRL _cartRL;
+        private readonly IOrderRL _orderRL;
 
-        public CartBL(ICartRL cart)
+        public OrderBL(IOrderRL order)
         {
-            _cartRL = cart;
+            _orderRL = order;
         }
 
-        public async Task<List<CartBookResponse>> GetListOfBooksInCart(int userID)
+        public async Task<List<PlaceOrderResponce>> GetListOfBooks(int userID)
         {
             try
             {
-                if (userID <= 0)
+                return await _orderRL.GetListOfPlaceOrder(userID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<PlaceOrderResponce> BookPlaceOdrder(int userID, int CartId)
+        {
+            try
+            {
+                if (userID < 0 || CartId < 0)
                 {
                     return null;
                 }
                 else
                 {
-                    return await _cartRL.GetListOfBooksInCart(userID);
+                    return await _orderRL.BookPlaceOdrder(userID, CartId);
                 }
             }
             catch (Exception ex)
@@ -38,36 +50,17 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<CartBookResponse> AddBookIntoCart(int userID, Cart data)
+        public async Task<bool> CancelPlaceOdrder(int userID, int orderID)
         {
             try
             {
-                if (userID <= 0 || data == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return await _cartRL.AddBookIntoCart(userID, data);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<bool> DeleteBookFromCart(int userID, int cartID)
-        {
-            try
-            {
-                if (userID <= 0 || cartID <= 0)
+                if (userID < 0 || orderID < 0)
                 {
                     return false;
                 }
                 else
                 {
-                    return await _cartRL.DeleteBookFromCart(userID, cartID);
+                    return await _orderRL.CancelPlaceOdrder(userID, orderID);
                 }
             }
             catch (Exception ex)
@@ -75,5 +68,6 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }
