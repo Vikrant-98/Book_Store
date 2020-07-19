@@ -19,5 +19,11 @@ namespace CommonLayer.Responce
         public int Pages { get; set; }
 
         public int Price { get; set; }
+
+        public bool IsDelete { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public int Quantity { get; set; }
     }
 }

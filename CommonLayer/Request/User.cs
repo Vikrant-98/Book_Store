@@ -21,16 +21,7 @@ namespace CommonLayer.Services
         [Required]
         [RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*[.]{0,1}[a-zA-Z0-9]*@[a-zA-Z0-9]*.{1}[a-zA-Z0-9]*[.]*[a-zA-Z0-9]*)$", ErrorMessage = "Enter Valid Email")]
         //Mail ID
-        public string Email { get; set; }
-        //[MaxLength(100)]
-        //[RegularExpression(@"^([a-zA-Z0-9]{2}[a-zA-Z0-9]*$", ErrorMessage = "Enter Valid Address")]
-        public string Address { get; set; }
-        [RegularExpression(@"^[A-Z]{1}[a-z]{2}[a-z]*$", ErrorMessage = "Enter Valid City")]
-        //[MaxLength(50)]
-        public string City { get; set; }
-        //[MaxLength(6)]
-        [RegularExpression(@"^[0-9]{6}$", ErrorMessage = "Enter Valid PinCode")]
-        public int PinCode { get; set; }
+        public string EmailID { get; set; }
         [Required(ErrorMessage = "Password Is Required")]
         [RegularExpression(@"^.{8,15}$", ErrorMessage = "Password Length should be between 8 to 15")]
         //Password

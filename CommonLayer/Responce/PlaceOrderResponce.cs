@@ -20,8 +20,14 @@ namespace CommonLayer.Responce
 
         public int Price { get; set; }
 
+        public int TotalPrice { get; set; }
+
+        public int Quantity { get; set; }
+
         public int Pages { get; set; }
 
         public bool IsPlace { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
