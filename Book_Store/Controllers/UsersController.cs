@@ -31,7 +31,7 @@ namespace Book_Store.Controllers
             _configuration = configuration;
         }
 
-        [Route("Register")]
+        [Route("")]
         [HttpPost]
         public async Task<IActionResult> UserRegister(User Info)
         {

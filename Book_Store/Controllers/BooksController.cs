@@ -52,6 +52,34 @@ namespace Book_Store.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+        [Route("{BookID}/Image")]
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddImage(int BookID, IFormFile Image)
+        {
+            try
+            {
+                var user = HttpContext.User;
+
+                int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
+                var data = await _booksBL.AddImage(adminID, BookID, Image);
+                if (data != null)
+                {
+                    success = true;
+                    message = "Image Added Successfully";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    message = "No Book Added";
+                    return NotFound(new { success, message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetListOfBooks(string Search,string OrderBy,string Type)
@@ -109,13 +137,15 @@ namespace Book_Store.Controllers
                 }
                 else
                 {
+                   success = false;
                    message = "Book not Deleted";
                   return NotFound(new { success, message });
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex.Message });
+                success = false;
+                return BadRequest(new { success, ex.Message });
             }
         }
         /// <summary>
