@@ -1,6 +1,7 @@
 ﻿using CommonLayer.Request;
 using CommonLayer.Responce;
 using CommonLayer.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
@@ -9,6 +10,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace RepositoryLayer.Services
 {
@@ -59,6 +62,58 @@ namespace RepositoryLayer.Services
                     command.Parameters.AddWithValue("@BooksAvailable", data.Available);
                     command.Parameters.AddWithValue("@IsDelete", false);
                     command.Parameters.AddWithValue("@CreateDate", createDate);
+                    command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                    responseData = BooksResponseModel(dataReader);
+                    conn.Close();
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Add Image
+        /// </summary>
+        /// <param name="adminId"></param>
+        /// <param name="BookID"></param>>
+        /// <param name="Image"></param>
+        /// <returns></returns>
+        public async Task<BooksResponse> AddImage(int adminId,int BookID,IFormFile Image)
+        {
+            try
+            {
+                BooksResponse responseData = null;
+
+                DateTime modifiedDate = DateTime.Now;
+
+                Account account = new Account(
+                    _configuration["CloudinarySettings:CloudName"],
+                    _configuration["CloudinarySettings:ApiKey"],
+                    _configuration["CloudinarySettings:ApiSecret"]);
+                var path = Image.OpenReadStream();
+                Cloudinary cloudinary = new Cloudinary(account);
+
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(Image.FileName,path)
+                };
+
+                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+                SQLConnection();
+
+                using (SqlCommand command = new SqlCommand("spUpdateBookById", conn))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@AdminID", adminId);
+                    command.Parameters.AddWithValue("@BookID", BookID);
+                    command.Parameters.AddWithValue("@Image", uploadResult.Url.ToString());
                     command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
                     conn.Open();
@@ -287,7 +342,10 @@ namespace RepositoryLayer.Services
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["BooksAvailable"])
+                        Available = Convert.ToInt32(dataReader["BooksAvailable"]),
+                        IsDeleted = Convert.ToBoolean(dataReader["IsDelete"]),
+                        Image = dataReader["Images"].ToString()
+
                     };
                 }
                 return responseData;
@@ -319,7 +377,9 @@ namespace RepositoryLayer.Services
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["BooksAvailable"])
+                        Available = Convert.ToInt32(dataReader["BooksAvailable"]),
+                        IsDeleted = Convert.ToBoolean(dataReader["IsDelete"]),
+                        Image = dataReader["Images"].ToString()
                     };
                     bookList.Add(responseData);
                 }
