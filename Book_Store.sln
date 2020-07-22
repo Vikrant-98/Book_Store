@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Book_Store", "Book_Store\Book_Store.csproj", "{4EE3ED2B-8307-4801-B4EC-674E21ED3A81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Book_Store", "Book_Store\Book_Store.csproj", "{4EE3ED2B-8307-4801-B4EC-674E21ED3A81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{E4BCCF83-A2AF-45AC-8140-01B269D24602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{E4BCCF83-A2AF-45AC-8140-01B269D24602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{FE534422-2567-40A9-B8CE-6F22EE7E2245}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{FE534422-2567-40A9-B8CE-6F22EE7E2245}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{EF0D8385-B4F1-41D8-BD36-EE0ED6945149}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{EF0D8385-B4F1-41D8-BD36-EE0ED6945149}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagrListner", "MessagrListner\MessagrListner.csproj", "{F51B405D-21BD-4701-834D-48020070D7E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EF0D8385-B4F1-41D8-BD36-EE0ED6945149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF0D8385-B4F1-41D8-BD36-EE0ED6945149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF0D8385-B4F1-41D8-BD36-EE0ED6945149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F51B405D-21BD-4701-834D-48020070D7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51B405D-21BD-4701-834D-48020070D7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51B405D-21BD-4701-834D-48020070D7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51B405D-21BD-4701-834D-48020070D7E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
