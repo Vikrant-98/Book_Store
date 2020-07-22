@@ -1,5 +1,6 @@
 ﻿using CommonLayer.Request;
 using CommonLayer.Responce;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,8 @@ namespace BusinessLayer.Interface
     public interface IBookBL
     {
         Task<BooksResponse> AddBooks(int adminId, Books data);
+
+        Task<BooksResponse> AddImage(int adminId, int BookID, IFormFile Image);
 
         Task<List<BooksResponse>> GetListOfBooks();
 

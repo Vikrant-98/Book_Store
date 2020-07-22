@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Request;
 using CommonLayer.Responce;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,21 @@ namespace BusinessLayer.Services
                     return null;
                 else
                     return await _booksRL.AddBooks(adminId,data);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<BooksResponse> AddImage(int adminId, int BookID, IFormFile Image)
+        {
+            try
+            {
+                if (BookID <= 0 || Image == null)
+                    return null;
+                else
+                    return await _booksRL.AddImage(adminId,BookID,Image);
             }
             catch (Exception ex)
             {
