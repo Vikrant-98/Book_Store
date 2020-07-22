@@ -24,5 +24,7 @@ namespace CommonLayer.Request
 
         [Required(ErrorMessage = "Available Is Required")]
         public int Available { get; set; }
+
+       
     }
 }
