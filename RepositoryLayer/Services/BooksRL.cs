@@ -1,6 +1,5 @@
 ﻿using CommonLayer.Request;
 using CommonLayer.Responce;
-using CommonLayer.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
@@ -113,7 +112,7 @@ namespace RepositoryLayer.Services
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@AdminID", adminId);
                     command.Parameters.AddWithValue("@BookID", BookID);
-                    command.Parameters.AddWithValue("@Image", uploadResult.Url.ToString());
+                    command.Parameters.AddWithValue("@Images", uploadResult.Url.ToString());
                     command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
                     conn.Open();
@@ -155,6 +154,34 @@ namespace RepositoryLayer.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Get List of Books from the database
+        /// </summary>
+        /// <returns>If Data Fetched Successfully return Resonse Data else null or Exception</returns>
+        public async Task<List<BooksResponse>> GetListOfBooksInCart(int userID)
+        {
+            try
+            {
+                List<BooksResponse> bookList = null;
+                SQLConnection();
+                bookList = new List<BooksResponse>();
+                using (SqlCommand command = new SqlCommand("spUserBookDetails", conn))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", userID);
+                    conn.Open();
+                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                    bookList = ListBookResponseModel(dataReader);
+                };
+                return bookList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Delete Books from the database
         /// </summary>
@@ -169,7 +196,7 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spDeleteBookById", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookId", BookId);
+                    command.Parameters.AddWithValue("@BookID", BookId);
                     conn.Open();
                     int count = await command.ExecuteNonQueryAsync();
                     if (count >= 0)
@@ -192,7 +219,7 @@ namespace RepositoryLayer.Services
         /// <param name="adminId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public async Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data)
+        public async Task<BooksResponse> UpdateBooks(int adminId, int BooksId, UpdateBooks data)
         {
             try
             {
@@ -205,6 +232,7 @@ namespace RepositoryLayer.Services
                 using (SqlCommand command = new SqlCommand("spUpdateBookById", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@AdminID", adminId);
                     command.Parameters.AddWithValue("@BookID", BooksId);
                     command.Parameters.AddWithValue("@BookName", data.BookName);
                     command.Parameters.AddWithValue("@AuthorName", data.AuthorName);
@@ -296,9 +324,9 @@ namespace RepositoryLayer.Services
                 case "BookName" :
                     return 1;
                 case "Price":
-                    return 3;
-                case "Pages":
                     return 4;
+                case "Pages":
+                    return 5;
                 default:
                     return 1;
             }
@@ -342,8 +370,8 @@ namespace RepositoryLayer.Services
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["BooksAvailable"]),
-                        IsDeleted = Convert.ToBoolean(dataReader["IsDelete"]),
+                        Available = Convert.ToInt32(dataReader["BookAvailable"]),
+                        IsDeleted = Convert.ToBoolean(dataReader["IsDeleted"]),
                         Image = dataReader["Images"].ToString()
 
                     };
@@ -377,8 +405,8 @@ namespace RepositoryLayer.Services
                         Description = dataReader["Description"].ToString(),
                         Price = Convert.ToInt32(dataReader["Price"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
-                        Available = Convert.ToInt32(dataReader["BooksAvailable"]),
-                        IsDeleted = Convert.ToBoolean(dataReader["IsDelete"]),
+                        Available = Convert.ToInt32(dataReader["BookAvailable"]),
+                        IsDeleted = Convert.ToBoolean(dataReader["IsDeleted"]),
                         Image = dataReader["Images"].ToString()
                     };
                     bookList.Add(responseData);

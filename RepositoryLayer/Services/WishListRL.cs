@@ -51,7 +51,6 @@ namespace RepositoryLayer.Services
                     command.Parameters.AddWithValue("@BookID", data.BookID);
                     command.Parameters.AddWithValue("@IsMoved", false);
                     command.Parameters.AddWithValue("@IsDelete", false);
-                    command.Parameters.AddWithValue("@Quantity", data.Quantity);
                     command.Parameters.AddWithValue("@CreateDate", createDate);
                     command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
@@ -104,7 +103,7 @@ namespace RepositoryLayer.Services
         /// <param name="wishListID">WishListID</param>
         /// <param name="wishListBook">Wish List Book Data</param>
         /// <returns>If Data Found return Response Data else null or Exeption</returns>
-        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID)
+        public async Task<CartBookResponse> MoveToCart(int userID, Wish_List data)
         {
             try
             {
@@ -116,7 +115,7 @@ namespace RepositoryLayer.Services
                 {
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", userID);
-                    command.Parameters.AddWithValue("@WishListID", wishListID);
+                    command.Parameters.AddWithValue("@WishListID", data.WishListID);
                     command.Parameters.AddWithValue("@CreateDate", createDate);
                     command.Parameters.AddWithValue("@ModifiedDate", modifiedDate);
 
@@ -148,7 +147,6 @@ namespace RepositoryLayer.Services
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@UserID", userID);
                     cmd.Parameters.AddWithValue("@WishListID", wishListID);
-                    cmd.Parameters.AddWithValue("@IsDelete", true);
 
                     conn.Open();
                     int count = await cmd.ExecuteNonQueryAsync();
@@ -179,16 +177,16 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new WishListResponse
                     {
-                        WishListID = Convert.ToInt32(dataReader["WishListId"]),
-                        UserID = Convert.ToInt32(dataReader["UserId"]),
+                        WishListID = Convert.ToInt32(dataReader["WishListID"]),
+                        UserID = Convert.ToInt32(dataReader["UserID"]),
                         BookName = dataReader["BookName"].ToString(),
-                        AuthorName = dataReader["Authorname"].ToString(),
-                        BookID = Convert.ToInt32(dataReader["BookId"]),
+                        AuthorName = dataReader["AuthorName"].ToString(),
+                        BookID = Convert.ToInt32(dataReader["BookID"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
                         Price = Convert.ToInt32(dataReader["Price"]),
-                        Quantity = Convert.ToInt32(dataReader["Quantity"]),
                         IsDeleted = Convert.ToBoolean(dataReader["IsDeleted"]),
-                        IsMoved = Convert.ToBoolean(dataReader["IsMoved"])
+                        IsMoved = Convert.ToBoolean(dataReader["IsMoved"]),
+                        Image = dataReader["Images"].ToString(),
                     };
                 }
                 return responseData;
@@ -213,16 +211,16 @@ namespace RepositoryLayer.Services
                 {
                     responseData = new WishListResponse
                     {
-                        WishListID = Convert.ToInt32(dataReader["WishListId"]),
-                        UserID = Convert.ToInt32(dataReader["UserId"]),
+                        WishListID = Convert.ToInt32(dataReader["WishListID"]),
+                        UserID = Convert.ToInt32(dataReader["UserID"]),
                         BookName = dataReader["BookName"].ToString(),
-                        AuthorName = dataReader["Authorname"].ToString(),
-                        BookID = Convert.ToInt32(dataReader["BookId"]),
+                        AuthorName = dataReader["AuthorName"].ToString(),
+                        BookID = Convert.ToInt32(dataReader["BookID"]),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
                         Price = Convert.ToInt32(dataReader["Price"]),
-                        Quantity = Convert.ToInt32(dataReader["Quantity"]),
                         IsDeleted = Convert.ToBoolean(dataReader["IsDeleted"]),
-                        IsMoved = Convert.ToBoolean(dataReader["IsMoved"])
+                        IsMoved = Convert.ToBoolean(dataReader["IsMoved"]),
+                        Image = dataReader["Images"].ToString(),
                     };
                     bookList.Add(responseData);
                 }

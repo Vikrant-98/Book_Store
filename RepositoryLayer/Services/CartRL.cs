@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,10 +50,9 @@ namespace RepositoryLayer.Services
                 SQLConnection();
                 using (SqlCommand command = new SqlCommand("spBookIntoCart", conn))
                 {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", userID);
                     command.Parameters.AddWithValue("@BookID", data.BookID);
-                    command.Parameters.AddWithValue("@Quantity", data.Quantity);
                     command.Parameters.AddWithValue("@IsDelete", false);
                     command.Parameters.AddWithValue("@IsActive", true);
                     command.Parameters.AddWithValue("@CreateDate", createDate);
@@ -83,7 +83,7 @@ namespace RepositoryLayer.Services
                 bookList = new List<CartBookResponse>();
                 using (SqlCommand command = new SqlCommand("spGetBooksByUserId", conn))
                 {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", userID);
 
                     conn.Open();
@@ -111,11 +111,9 @@ namespace RepositoryLayer.Services
                 SQLConnection();
                 using (SqlCommand command = new SqlCommand("spDeleteCartByUserId", conn))
                 {
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", userID);
                     command.Parameters.AddWithValue("@CartID", cartID);
-                    command.Parameters.AddWithValue("@IsDelete", true);
-
                     conn.Open();
                     int count = await command.ExecuteNonQueryAsync();
                     if (count >= 0)
@@ -153,9 +151,9 @@ namespace RepositoryLayer.Services
                         Author = dataReader["AuthorName"].ToString(),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
                         Price = Convert.ToInt32(dataReader["Price"]),
-                        Quantity = Convert.ToInt32(dataReader["Quantity"]),
                         IsDelete = Convert.ToBoolean(dataReader["IsDeleted"]),
-                        IsActive = Convert.ToBoolean(dataReader["IsActive"])
+                        IsActive = Convert.ToBoolean(dataReader["IsActive"]),
+                        Image = dataReader["Images"].ToString(),
                     };
                     bookList.Add(responseData);
                 }
@@ -187,9 +185,9 @@ namespace RepositoryLayer.Services
                         Author = dataReader["AuthorName"].ToString(),
                         Pages = Convert.ToInt32(dataReader["Pages"]),
                         Price = Convert.ToInt32(dataReader["Price"]),
-                        Quantity = Convert.ToInt32(dataReader["Quantity"]),
                         IsDelete = Convert.ToBoolean(dataReader["IsDeleted"]),
-                        IsActive = Convert.ToBoolean(dataReader["IsActive"])
+                        IsActive = Convert.ToBoolean(dataReader["IsActive"]),
+                        Image = dataReader["Images"].ToString(),
                     };
                 }
                 return responseData;

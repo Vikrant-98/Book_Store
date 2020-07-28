@@ -80,7 +80,7 @@ namespace RepositoryLayer.Services
                 string Password = EncryptedPassword.EncodePasswordToBase64(data.Password);
                 SQLConnection();
 
-                using (SqlCommand command = new SqlCommand("spUserLogin", conn))
+                using (SqlCommand command = new SqlCommand("spAdminLogin", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@EmailID", data.EmailID);

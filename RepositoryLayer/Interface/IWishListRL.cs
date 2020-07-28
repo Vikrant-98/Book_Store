@@ -15,6 +15,6 @@ namespace RepositoryLayer.Interface
 
         Task<bool> DeleteBookFromWishList(int userID, int wishListID);
 
-        Task<CartBookResponse> MoveToCart(int userID, int wishListID);
+        Task<CartBookResponse> MoveToCart(int userID, Wish_List data);
     }
 }
