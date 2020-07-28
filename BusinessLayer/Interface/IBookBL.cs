@@ -16,9 +16,11 @@ namespace BusinessLayer.Interface
 
         Task<List<BooksResponse>> GetListOfBooks();
 
+        Task<List<BooksResponse>> GetListOfBooksInCart(int userID);
+
         Task<bool> DeleteBooks(int BookId);
 
-        Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data);
+        Task<BooksResponse> UpdateBooks(int adminId,int BooksId, UpdateBooks data);
 
         Task<List<BooksResponse>> SearchBook(string bookSearch);
 

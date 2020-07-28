@@ -9,10 +9,12 @@ namespace BusinessLayer.Interface
 {
     public interface IOrderBL
     {
-        Task<PlaceOrderResponce> BookPlaceOdrder(int userID, int CartId);
+        Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder data);
 
         Task<bool> CancelPlaceOdrder(int userID, int orderID);
 
         Task<List<PlaceOrderResponce>> GetListOfBooks(int userID);
+
+        Task<AddressResponce> Address(int userID, Address data);
     }
 }

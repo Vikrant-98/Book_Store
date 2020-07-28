@@ -73,17 +73,17 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<CartBookResponse> MoveToCart(int userID, int wishListID)
+        public async Task<CartBookResponse> MoveToCart(int userID, Wish_List data)
         {
             try
             {
-                if (userID <= 0 )
+                if (userID <= 0 && data != null )
                 {
                     return null;
                 }
                 else
                 {
-                    return await _wishListRL.MoveToCart(userID, wishListID);
+                    return await _wishListRL.MoveToCart(userID, data);
                 }
             }
             catch (Exception ex)

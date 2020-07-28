@@ -61,6 +61,18 @@ namespace BusinessLayer.Services
             }
         }
 
+        public async Task<List<BooksResponse>> GetListOfBooksInCart(int userID)
+        {
+            try
+            {
+                return await _booksRL.GetListOfBooksInCart(userID);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<bool> DeleteBooks(int BookID)
         {
             try
@@ -80,14 +92,14 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<BooksResponse> UpdateBooks(int BooksId, UpdateBooks data)
+        public async Task<BooksResponse> UpdateBooks(int adminId, int BooksId, UpdateBooks data)
         {
             try
             {
                 if (data == null)
                     return null;
                 else
-                    return await _booksRL.UpdateBooks(BooksId, data);
+                    return await _booksRL.UpdateBooks(adminId, BooksId, data);
             }
             catch (Exception ex)
             {

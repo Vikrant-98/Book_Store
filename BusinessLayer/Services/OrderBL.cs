@@ -31,17 +31,17 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<PlaceOrderResponce> BookPlaceOdrder(int userID, int CartId)
+        public async Task<PlaceOrderResponce> BookPlaceOdrder(int userID, PlaceOrder data)
         {
             try
             {
-                if (userID < 0 || CartId < 0)
+                if (userID < 0 || data == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return await _orderRL.BookPlaceOdrder(userID, CartId);
+                    return await _orderRL.BookPlaceOdrder(userID, data);
                 }
             }
             catch (Exception ex)
@@ -61,6 +61,25 @@ namespace BusinessLayer.Services
                 else
                 {
                     return await _orderRL.CancelPlaceOdrder(userID, orderID);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AddressResponce> Address(int userID, Address data)
+        {
+            try
+            {
+                if (userID < 0 || data == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _orderRL.Address(userID, data);
                 }
             }
             catch (Exception ex)
