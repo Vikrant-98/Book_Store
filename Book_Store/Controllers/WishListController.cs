@@ -130,16 +130,16 @@ namespace Book_Store.Controllers
         /// <param name="wishListID">WishListID</param>
         /// <param name="wishListBook">Wish List Book Data</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [HttpPost("{wishListID}/Move")]
+        [HttpPost("MoveToCart")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> MoveToCart(int wishListID)
+        public async Task<IActionResult> MoveToCart(Wish_List info)
         {
             try
             {
                 var user = HttpContext.User;
                 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _wishListBL.MoveToCart(userID, wishListID);
+                var data = await _wishListBL.MoveToCart(userID, info);
                 if (data != null)
                 {
                     success = true;

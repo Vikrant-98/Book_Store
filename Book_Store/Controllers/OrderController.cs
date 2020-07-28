@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Book_Store.MSMQ_Service;
 using BusinessLayer.Interface;
 using CommonLayer.Request;
+using CommonLayer.Responce;
 using MessagrListner;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -65,32 +66,43 @@ namespace Book_Store.Controllers
         /// </summary>
         /// <param name="cart">Cart Data</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [Route("{CartId}/PlaceOrder")]
+        [Route("PlaceOrder")]
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> BookPlaceOdrder(int CartId)
+        public async Task<IActionResult> BookPlaceOdrder(PlaceOrder data)
         {
             try
             {
                 var user = HttpContext.User;
 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _orderBL.BookPlaceOdrder(userID, CartId);
-                if (data != null)
+                var orderData = await _orderBL.BookPlaceOdrder(userID, data);
+                if (orderData != null)
                 {
                     success = true;
                     message = "Place Order Successfully";
+
+                    OrderSummary responcedata = new OrderSummary
+                    {
+                        OrderID = orderData.OrderId,
+                        BookName = orderData.BookName,
+                        AuthorName = orderData.AuthorName,
+                        Price = orderData.TotalPrice,
+                        TotalPrice = orderData.TotalPrice,
+                        Quantity = orderData.Quantity
+                    };
+
                     string msmqRecordInQueue = message + "\nInformation :"
-                    + "\nUserID :"+ data.UserId
-                    + "\nBookID :" + data.BookId
-                    + "\nBook Name :" + data.BookName
-                    + "\nAuthor Name :" + data.AuthorName
-                    + "\nBooks Quantity :" + data.Quantity
-                    + "\nTotal Cost :" + data.TotalPrice;
+                    + "\nOrderID :" + orderData.UserId
+                    + "\nUserID :" + orderData.UserId
+                    + "\nBook Name :" + orderData.BookName
+                    + "\nAuthor Name :" + orderData.AuthorName
+                    + "\nBooks Quantity :" + orderData.Quantity
+                    + "\nTotal Cost :" + orderData.TotalPrice;
                     msmqSender.Message(msmqRecordInQueue);
                     MessageListner msg = new MessageListner();
 
-                    return Ok(new { success, message, data });
+                    return Ok(new { success, message, responcedata });
                 }
                 else
                 {
@@ -106,29 +118,30 @@ namespace Book_Store.Controllers
         }
 
         /// <summary>
-        /// Add Book into Cart
+        /// Add Address
         /// </summary>
-        /// <param name="cart">Cart Data</param>
+        /// <param name="cart">Address Info</param>
         /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
-        [Route("{orderID}/CancelOrder")]
-        [HttpPut]
+        [Route("AddAddress")]
+        [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> CancelPlaceOdrder(int orderID)
+        public async Task<IActionResult> addAddress(Address info)
         {
             try
             {
                 var user = HttpContext.User;
 
                 int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
-                var data = await _orderBL.CancelPlaceOdrder(userID, orderID);
-                if (data == true)
+                var data = await _orderBL.Address(userID, info);
+                if (data != null)
                 {
                     success = true;
                     message = "Order Canceled Successfully";
-                    return Ok(new { success, message});
+                    return Ok(new { success, message, data});
                 }
                 else
                 {
+                    success = false;
                     message = "Order Not Cancled";
                     return NotFound(new { success, message });
                 }

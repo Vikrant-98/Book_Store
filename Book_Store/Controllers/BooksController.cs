@@ -148,6 +148,42 @@ namespace Book_Store.Controllers
                 return BadRequest(new { success, ex.Message });
             }
         }
+
+        /// <summary>
+        /// Update the Records of book using BookId and Information
+        /// </summary>
+        /// <param name="BookId"></param>
+        /// <param name="Info"></param>
+        /// <returns></returns>
+        [Route("Cart")]
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetListOfBooksInCart()
+        {
+            try
+            {
+                var user = HttpContext.User;
+                int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
+                var data = await _booksBL.GetListOfBooksInCart(userID);
+
+                if (data != null)
+                {
+                    success = true;
+                    message = "Books In Cart fetched Successfully";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    message = "Books Not Fetched";
+                    return NotFound(new { success, message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
         /// <summary>
         /// Update the Records of book using BookId and Information
         /// </summary>
@@ -157,13 +193,13 @@ namespace Book_Store.Controllers
         [Route("{BookId}")]
         [HttpPut]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateBooks(int BookId, UpdateBooks Info)
+        public async Task<IActionResult> UpdateBooks(int BookId,[FromBody] UpdateBooks Info)
         {
             try
             {
                 var user = HttpContext.User;
                 int adminID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "AdminID").Value);
-                var data = await _booksBL.UpdateBooks(BookId,Info);
+                var data = await _booksBL.UpdateBooks(adminID,BookId, Info);
 
                 if (data != null)
                 {
