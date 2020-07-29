@@ -13,6 +13,8 @@ namespace RepositoryLayer.Interface
 
         Task<bool> CancelPlaceOdrder(int userID, int orderID);
 
+        Task<AddressResponce> GetAddress(int userID);
+
         Task<List<PlaceOrderResponce>> GetListOfPlaceOrder(int userID);
 
         Task<AddressResponce> Address(int userID, Address data);

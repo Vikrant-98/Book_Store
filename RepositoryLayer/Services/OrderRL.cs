@@ -174,6 +174,34 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
+        /// Place the Order
+        /// </summary>
+        /// <param name="userID">User-ID</param>
+        /// <param name="data">Cart Data</param>
+        /// <returns>If Address Successfully return Response Data else null or Bad Request</returns>
+        public async Task<AddressResponce> GetAddress(int userID)
+        {
+            try
+            {
+                AddressResponce responseData ;
+                SQLConnection();
+                using (SqlCommand command = new SqlCommand("spGetAddressDetail", conn))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", userID);
+
+                    conn.Open();
+                    SqlDataReader dataReader = await command.ExecuteReaderAsync();
+                    responseData = AddressResponseModel(dataReader);
+                };
+                return responseData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
         /// Book Response Method
         /// </summary>
         /// <param name="dataReader">Sql Data Reader</param>
