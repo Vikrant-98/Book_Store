@@ -125,7 +125,7 @@ namespace Book_Store.Controllers
         [Route("AddAddress")]
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> addAddress(Address info)
+        public async Task<IActionResult> AddAddress(Address info)
         {
             try
             {
@@ -136,13 +136,49 @@ namespace Book_Store.Controllers
                 if (data != null)
                 {
                     success = true;
-                    message = "Order Canceled Successfully";
+                    message = "Address Added Successfully";
                     return Ok(new { success, message, data});
                 }
                 else
                 {
                     success = false;
-                    message = "Order Not Cancled";
+                    message = "No Address Added";
+                    return NotFound(new { success, message });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Add Address
+        /// </summary>
+        /// <param name="cart">Address Info</param>
+        /// <returns>If Data Found return Ok else Not Found or Bad Request</returns>
+        [Route("Address")]
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetAddress()
+        {
+            try
+            {
+                var user = HttpContext.User;
+
+                int userID = Convert.ToInt32(user.Claims.FirstOrDefault(u => u.Type == "UserID").Value);
+                var data = await _orderBL.GetAddress(userID);
+                if (data != null)
+                {
+                    success = true;
+                    message = "Address Get Successfully";
+                    return Ok(new { success, message, data });
+                }
+                else
+                {
+                    success = false;
+                    message = "fail to Get  Address Added";
                     return NotFound(new { success, message });
                 }
 
