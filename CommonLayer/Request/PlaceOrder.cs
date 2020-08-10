@@ -7,6 +7,10 @@ namespace CommonLayer.Request
     public class PlaceOrder
     {
         public int CartId { get; set; }
+
+        public int Quantity { get; set; }
+
+        public int AddressID { get; set; }
     }
     public class CalcelOrder
     {

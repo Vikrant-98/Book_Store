@@ -60,6 +60,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = OrderResponseModel(dataReader);
+                    conn.Close();
                 };
                 return responseData;
             }
@@ -87,6 +88,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListPlaceOrderResponceModel(dataReader);
+                    conn.Close();
                 };
                 return bookList;
             }
@@ -122,6 +124,7 @@ namespace RepositoryLayer.Services
                     {
                         return true;
                     }
+                    conn.Close();
                 };
 
                 return false;
@@ -164,6 +167,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = AddressResponseModel(dataReader);
+                    conn.Close();
                 };
                 return responseData;
             }
@@ -193,6 +197,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = AddressResponseModel(dataReader);
+                    conn.Close();
                 };
                 return responseData;
             }

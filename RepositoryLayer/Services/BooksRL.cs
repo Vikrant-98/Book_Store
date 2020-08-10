@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using System.Threading.Tasks;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
@@ -146,6 +145,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListBookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return bookList;
             }
@@ -173,6 +173,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListBookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return bookList;
             }
@@ -190,19 +191,22 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                
+                DateTime modifiedDate = DateTime.Now;
+
                 SQLConnection();
                 
                 using (SqlCommand command = new SqlCommand("spDeleteBookById", conn))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@BookID", BookId);
+                    command.Parameters.AddWithValue("@ModifiedDate", BookId);
                     conn.Open();
                     int count = await command.ExecuteNonQueryAsync();
                     if (count >= 0)
                     {
                         return true;
                     }
+                    conn.Close();
                 };
                 
                 return false;
@@ -274,6 +278,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListBookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return bookList;
             }
@@ -303,6 +308,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListBookResponseModel(dataReader);
+                    conn.Close();
                 }
                 return bookList;
 

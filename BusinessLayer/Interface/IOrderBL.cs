@@ -16,5 +16,7 @@ namespace BusinessLayer.Interface
         Task<List<PlaceOrderResponce>> GetListOfBooks(int userID);
 
         Task<AddressResponce> Address(int userID, Address data);
+
+        Task<AddressResponce> GetAddress(int userID);
     }
 }

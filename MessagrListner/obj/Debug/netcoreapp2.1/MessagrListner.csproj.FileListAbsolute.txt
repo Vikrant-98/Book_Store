@@ -1,0 +1,14 @@
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\MessagrListner.deps.json
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\MessagrListner.runtimeconfig.json
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\MessagrListner.runtimeconfig.dev.json
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\MessagrListner.dll
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\MessagrListner.pdb
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\bin\Debug\netcoreapp2.1\Microsoft.Extensions.Configuration.Abstractions.xml
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.csprojAssemblyReference.cache
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.csproj.CoreCompileInputs.cache
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.AssemblyInfoInputs.cache
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.AssemblyInfo.cs
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.csproj.CopyComplete
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.dll
+C:\Users\The Daddy\source\repos\Book_Store\MessagrListner\obj\Debug\netcoreapp2.1\MessagrListner.pdb

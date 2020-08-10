@@ -49,7 +49,7 @@ namespace BusinessLayer.Services
                 throw new Exception(ex.Message);
             }
         }
-
+        
         public async Task<bool> CancelPlaceOdrder(int userID, int orderID)
         {
             try
@@ -80,6 +80,25 @@ namespace BusinessLayer.Services
                 else
                 {
                     return await _orderRL.Address(userID, data);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<AddressResponce> GetAddress(int userID)
+        {
+            try
+            {
+                if (userID < 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return await _orderRL.GetAddress(userID);
                 }
             }
             catch (Exception ex)

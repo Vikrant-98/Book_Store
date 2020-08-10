@@ -24,6 +24,6 @@ namespace CommonLayer.Responce
 
         public bool IsActive { get; set; }
 
-        public int Quantity { get; set; }
+        public string Image { get; set; }
     }
 }

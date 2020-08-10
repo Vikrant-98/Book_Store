@@ -1,14 +1,22 @@
 ﻿using Experimental.System.Messaging;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace MessagrListner
 {
-    class MessageListner
+    public class MessageListner
     {
+        public IConfiguration _configuration;
+
         static void Main(string[] args)
         {
+            MessageListner msg = new MessageListner();
+            msg.Listner();
+        }
+        public void Listner()
+        {
             //create object of smtp class 
-            SMTP smtp = new SMTP();
+            SMTP smtp = new SMTP(_configuration);
 
             Console.WriteLine("Message");
 
@@ -29,7 +37,6 @@ namespace MessagrListner
             //Print message of the body
             Console.WriteLine(MyMessage.Body.ToString());
 
-            Console.ReadLine();
         }
     }
 }

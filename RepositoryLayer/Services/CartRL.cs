@@ -60,6 +60,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = BookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return responseData;
             }
@@ -89,6 +90,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     bookList = ListBookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return bookList;
             }
@@ -120,6 +122,7 @@ namespace RepositoryLayer.Services
                     {
                         return true;
                     }
+                    conn.Close();
                 };
                 return false;
             }

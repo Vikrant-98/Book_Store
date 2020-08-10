@@ -7,7 +7,10 @@ namespace CommonLayer.Request
     public class WishList
     {
         public int BookID { get; set; }
+    }
 
-        public int Quantity { get; set; }
+    public class Wish_List
+    {
+        public int WishListID { get; set; }
     }
 }

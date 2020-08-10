@@ -122,6 +122,7 @@ namespace RepositoryLayer.Services
                     conn.Open();
                     SqlDataReader dataReader = await command.ExecuteReaderAsync();
                     responseData = CartRL.BookResponseModel(dataReader);
+                    conn.Close();
                 };
                 return responseData;
             }
@@ -154,6 +155,7 @@ namespace RepositoryLayer.Services
                     {
                         return true;
                     }
+                    conn.Close();
                 };
                 return false;
             }

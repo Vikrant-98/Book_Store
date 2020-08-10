@@ -7,7 +7,5 @@ namespace CommonLayer.Request
     public class Cart
     {
         public int BookID { get; set; }
-
-        public int Quantity { get; set; }
     }
 }

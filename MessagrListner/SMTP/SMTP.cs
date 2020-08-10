@@ -7,9 +7,14 @@ using System.Text;
 
 namespace MessagrListner
 {
-    class SMTP
+    public class SMTP
     {
-        public IConfiguration Configuration;
+        private IConfiguration _configuration;
+
+        public SMTP(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         //Method for sending mail 
         public void SendMail(string data)
@@ -20,10 +25,10 @@ namespace MessagrListner
                 var message = new MimeMessage();
 
                 //message sent by the user email
-                message.From.Add(address: new MailboxAddress("Employee Management", "vikrantchitte5398@gmail.com"));
+                message.From.Add(address: new MailboxAddress("Book Store", "chittevikey5@gmal.com"));
 
                 //messsage recieved by the user email
-                message.To.Add(new MailboxAddress("Employee Management", "vikrantchitte5398@gmail.com"));
+                message.To.Add(new MailboxAddress("Book Store", "chittevikey5@gmail.com"));
 
                 //subject of email
                 message.Subject = "Registration";
@@ -40,7 +45,7 @@ namespace MessagrListner
                 using (var client = new SmtpClient())
                 {
                     client.Connect("smtp.gmail.com", 587, false);
-                    client.Authenticate("vikrantchitte5398@gmail.com", "");
+                    client.Authenticate("chittevikey5@gmail.com", "nandlalv");
                     client.Send(message);
                     client.Disconnect(true);
                 }

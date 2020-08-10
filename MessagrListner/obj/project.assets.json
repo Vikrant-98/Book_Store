@@ -4146,9 +4146,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessagrListner.csproj",
-      "projectName": "MessagrListner",
-      "projectPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessagrListner.csproj",
+      "projectUniqueName": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessageListner.csproj",
+      "projectName": "MessageListner",
+      "projectPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\MessageListner.csproj",
       "packagesPath": "C:\\Users\\The Daddy\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\The Daddy\\source\\repos\\Book_Store\\MessagrListner\\obj\\",
       "projectStyle": "PackageReference",

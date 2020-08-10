@@ -25,5 +25,7 @@ namespace CommonLayer.Responce
         public bool IsDeleted { get; set; }
 
         public bool IsMoved { get; set; }
+
+        public string Image { get; set; }
     }
 }
